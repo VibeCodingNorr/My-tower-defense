@@ -5,7 +5,7 @@ render_mode cull_back, depth_draw_opaque, diffuse_burley, specular_schlick_ggx;
 // accents with weathered fantasy masonry. This affects ONLY static tower meshes.
 uniform sampler2D source_texture : source_color, filter_linear_mipmap;
 uniform bool has_texture = false;
-uniform vec4 source_color : source_color = vec4(1.0);
+uniform vec4 source_tint : source_color = vec4(1.0);
 uniform float purple_replacement : hint_range(0.0, 1.0) = 0.97;
 
 void fragment() {
@@ -13,7 +13,7 @@ void fragment() {
     if (has_texture) {
         sample_rgb = texture(source_texture, UV).rgb;
     }
-    vec3 base = sample_rgb * source_color.rgb;
+    vec3 base = sample_rgb * source_tint.rgb;
     float purple = smoothstep(0.065, 0.23, base.b - base.g)
         * smoothstep(0.015, 0.15, base.r - base.g);
     float brightness = dot(base, vec3(0.25, 0.60, 0.15));
