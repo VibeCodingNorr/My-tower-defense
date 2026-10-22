@@ -3,7 +3,7 @@ render_mode unshaded, cull_disabled;
 
 uniform vec4 grass : source_color = vec4(0.25, 0.39, 0.34, 1.0);
 uniform vec4 grid_line : source_color = vec4(0.37, 0.52, 0.53, 1.0);
-uniform float cells = 48.0;
+uniform float cells = 96.0;
 uniform float line_strength : hint_range(0.0, 1.0) = 0.4;
 
 void fragment() {
