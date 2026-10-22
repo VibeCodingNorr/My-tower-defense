@@ -2,12 +2,14 @@
 #include <godot_cpp/godot.hpp>
 
 #include "camera/winter_camera_rig.hpp"
+#include "gameplay/creep_demo_mover.hpp"
 
 using namespace godot;
 
 static void initialize_wintertd(ModuleInitializationLevel level) {
     if (level == MODULE_INITIALIZATION_LEVEL_SCENE) {
         ClassDB::register_class<WinterCameraRig>();
+        ClassDB::register_class<CreepDemoMover>();
     }
 }
 

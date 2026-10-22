@@ -19,6 +19,7 @@ FetchContent_MakeAvailable(godot_cpp)
 add_library(wintertd SHARED
     src/register_types.cpp
     src/camera/winter_camera_rig.cpp
+    src/gameplay/creep_demo_mover.cpp
 )
 target_include_directories(wintertd PRIVATE src)
 target_link_libraries(wintertd PRIVATE godot::cpp)
