@@ -28,7 +28,7 @@ For CachyOS, install cmake, ninja, git, gcc, python, and Godot.
 - Space: return camera target to map center
 
 Expected: 96×96 placeholder ground grid, three smaller cubes, soft ambient
-light and directional light. Start angle 62° downward, yaw 0°, FOV 46°,
+light and directional light. Start angle 57° downward, yaw 0°, FOV 46°,
 distance 42 units. Zoom spans 16–80 units.
 
 `src/camera/` holds the only active native class. Other subsystems will be
@@ -36,6 +36,10 @@ added in later milestones. The renderer and camera are not part of gameplay
 simulation. No Warcraft III proprietary assets or code are included.
 
 ## WC3 camera framing
+Screenshot iteration: the original 62° pitch flattened the test markers;
+57° exposes more vertical faces. Placeholder cubes were too bright, so their
+albedo and the ambient/sun intensity are lowered. The map stays 96×96.
+
 The M0.3 perspective is a first tuning pass based on the provided Wintermaul TD
 reference screenshot. M0.2's working C++ extension and interactions remain
 unchanged. No gameplay systems or final graphics are included.
