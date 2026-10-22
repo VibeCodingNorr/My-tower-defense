@@ -21,7 +21,7 @@ func _apply_to_meshes(node: Node) -> void:
                     continue
                 var winter_material := ShaderMaterial.new()
                 winter_material.shader = WINTER_TOWER_SHADER
-                winter_material.set_shader_parameter("source_color", source.albedo_color)
+                winter_material.set_shader_parameter("source_tint", source.albedo_color)
                 winter_material.set_shader_parameter("has_texture", source.albedo_texture != null)
                 if source.albedo_texture != null:
                     winter_material.set_shader_parameter("source_texture", source.albedo_texture)
