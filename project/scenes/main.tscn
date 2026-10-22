@@ -14,7 +14,7 @@ size = Vector2(96, 96)
 size = Vector3(1.3, 1.8, 1.3)
 
 [sub_resource type="StandardMaterial3D" id="LandmarkMat"]
-albedo_color = Color(0.69, 0.72, 0.68, 1)
+albedo_color = Color(0.39, 0.47, 0.45, 1)
 roughness = 0.86
 
 [sub_resource type="ProceduralSkyMaterial" id="SkyMaterial"]
@@ -30,7 +30,7 @@ background_mode = 2
 sky = SubResource("Sky")
 ambient_light_source = 2
 ambient_light_color = Color(0.68, 0.77, 0.82, 1)
-ambient_light_energy = 0.55
+ambient_light_energy = 0.32
 reflected_light_source = 2
 
 [node name="WinterTD" type="Node3D"]
@@ -40,7 +40,7 @@ environment = SubResource("Environment")
 
 [node name="Sun" type="DirectionalLight3D" parent="."]
 rotation_degrees = Vector3(-56, -34, 0)
-light_energy = 1.15
+light_energy = 0.85
 shadow_enabled = true
 
 [node name="Ground" type="MeshInstance3D" parent="."]
