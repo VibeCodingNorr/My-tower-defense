@@ -1,8 +1,9 @@
-# WinterTD 3D — M0.4 (stacked on M0.3)
+# WinterTD 3D — M0.5 (stacked on M0.4)
 
 Godot 4.7.2 + C++20 via GDExtension. This milestone contains a native RTS camera,
 procedural snow and ice-lane shaders, static environment props, and build infrastructure.
-There are **no gameplay systems** yet.
+This milestone adds an **isolated C++ movement test fixture**; no combat, tower
+building, multiplayer or gameplay pathfinder exists yet.
 
 ## Requirements
 - Godot 4.7.2 stable
@@ -133,3 +134,31 @@ smoke test on Godot 4.7.2, after building the native extension.
 The GitHub workflow builds on Linux and Windows. A successful native build and
 Godot runtime test are still required before marking M0.2 verified. Generated
 binaries are deliberately not committed.
+
+## M0.5 – Animated Frost Fox prototype
+
+- Native C++ `CreepDemoMover` updates a single test creature in `_physics_process`
+  (fixed engine timestep, no system clock randomness).
+- Movement passes through **author-time demo waypoints** drawn over the decorative
+  ice. These are *not* the future maze/pathfinding implementation.
+- A bundled rigged `Fox.glb` plays the real `Survey` (idle) and `Walk` joint
+  animation cycles; a scripted visual collapse is the temporary death stand-in.
+- A camera-facing health bar displays 100 HP. Press **H** to deduct 25 test HP,
+  **R** to restart. Reaching 0 HP or the end of the preview route triggers a
+  short fall, then automatic reset. Camera controls remain from M0.3.
+- Presentation and UI are in `project/scripts/creep_preview_view.gd`, while
+  waypoint progression and HP fixture state live in C++.
+- Licensing: the fox model is CC0; rigging/animations and conversion are
+  **CC BY 4.0**, with all credits in `docs/ASSET_LICENSES.md`.
+
+### M0.5 Test
+
+Close Godot, then in your existing clone:
+
+```bash
+git fetch origin && git switch --track origin/feat/m0-5-animated-creep && cmake --preset debug && cmake --build --preset debug --parallel 4 && godot --path project --editor
+```
+
+Press F5. Expect idle for ~1.8s, real limb animation while walking along the
+ice, camera-facing HP bar, H and R interactions, and a temporary fall/reset.
+Please report whether the fox faces the direction of travel and share errors.

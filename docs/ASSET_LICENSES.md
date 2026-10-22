@@ -31,3 +31,17 @@ Only these selected GLBs are bundled, and their upstream Git blob SHA-1 values a
 These are static, non-animated environment references. Future animated creatures
 require a separate licensed rigged 3D character pipeline.
 Warcraft III graphics, models and textures are **not** included.
+
+## Animated Creep Test Asset – Frostfuchs (M0.5)
+
+- **File:** `project/assets/creeps/fox/Fox.glb`
+- **Source:** https://github.com/KhronosGroup/glTF-Sample-Assets/tree/main/Models/Fox
+- **Model:** PixelMannen (2014), **CC0 1.0 Universal**.
+- **Rigging and animations:** tomkranis (2014), **CC BY 4.0**.
+- **glTF conversion:** @AsoboStudio and @scurest (2017), **CC BY 4.0**.
+- **Original animation clips:** `Survey`, `Walk`, `Run`.
+- **Note:** No actual death animation is included; the temporary collapse is coded in `creep_preview_view.gd`.
+- **Changes:** Embedded as Godot scene at 0.0185× scale, visually named Frostfuchs, with separate C++ path-preview movement and health bar; source binary GLB unchanged.
+- **License:** https://creativecommons.org/licenses/by/4.0/
+
+This notice provides the CC-BY attribution for the animation and conversion.
