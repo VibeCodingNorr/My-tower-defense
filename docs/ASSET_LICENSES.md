@@ -45,3 +45,16 @@ Warcraft III graphics, models and textures are **not** included.
 - **License:** https://creativecommons.org/licenses/by/4.0/
 
 This notice provides the CC-BY attribution for the animation and conversion.
+
+### WinterTD M0.5.2 derived Fox Root Motion GLB
+
+- Derived file: `project/assets/creeps/fox/Fox_RootMotion.glb`.
+- Original source file retained unmodified: `project/assets/creeps/fox/Fox.glb`.
+- **Change explicitly authored by WinterTD:** the original `Walk` is in-place. We added a
+  separate `Walk_RootMotion` clip retaining the same original joint animation and
+  attaching a linear forward translation channel to `WinterTD_MotionRoot` (1.5 m
+  per 0.70833-second walk cycle at the scene's 0.0185 source-to-world scale).
+  This is a test of real *animation-driven* translation extraction, not a claim
+  that the Khronos original contains root-motion data. The original `Walk` remains
+  available for A/B comparisons and is not modified.
+- All original CC-BY attribution above continues to apply to this derived model.

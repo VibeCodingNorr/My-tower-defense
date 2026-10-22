@@ -17,9 +17,8 @@ const std::array<Vector3, 10> kPreviewWaypoints = {{
     {16.0f, 0.008f, 8.0f}, {-16.0f, 0.008f, 8.0f},
     {-16.0f, 0.008f, 16.0f}, {16.0f, 0.008f, 16.0f}
 }};
-// Source Walk clip is 0.7083s. 2.1m/s gives ~1.49m per gait cycle.
-// 4.3m/s looked like ice skating because the paws never kept up.
-constexpr double kPreviewSpeed = 2.1;
+// M0.5.2 has NO independent movement speed; actual distance comes from
+// sampled GLB root translation on every fixed Godot physics tick.
 constexpr double kTurnRadiansPerSecond = 8.0;
 constexpr double kIdleSeconds = 1.8;
 constexpr double kCollapseSeconds = 2.5;
@@ -28,6 +27,7 @@ constexpr double kCollapseSeconds = 2.5;
 void CreepDemoMover::_bind_methods() {
     ClassDB::bind_method(D_METHOD("reset_demo"), &CreepDemoMover::reset_demo);
     ClassDB::bind_method(D_METHOD("apply_demo_hit", "amount"), &CreepDemoMover::apply_demo_hit);
+    ClassDB::bind_method(D_METHOD("apply_demo_root_motion", "model_delta", "physics_delta"), &CreepDemoMover::apply_demo_root_motion);
     ClassDB::bind_method(D_METHOD("get_demo_phase"), &CreepDemoMover::get_demo_phase);
     ClassDB::bind_method(D_METHOD("get_demo_health"), &CreepDemoMover::get_demo_health);
     ClassDB::bind_method(D_METHOD("get_demo_health_fraction"), &CreepDemoMover::get_demo_health_fraction);
@@ -45,6 +45,7 @@ void CreepDemoMover::reset_demo() {
     phase_seconds_ = 0.0;
     waypoint_index_ = 1;
     health_ = 100;
+    observed_speed_ = 0.0;
     set_position(kPreviewWaypoints.front());
     const Vector3 forward = kPreviewWaypoints[1] - kPreviewWaypoints[0];
     set_rotation(Vector3(0.0f, std::atan2(-forward.x, -forward.z), 0.0f));
@@ -77,7 +78,18 @@ int CreepDemoMover::get_demo_health() const {
 }
 
 double CreepDemoMover::get_demo_speed() const {
-    return phase_ == Phase::Moving ? kPreviewSpeed : 0.0;
+    return phase_ == Phase::Moving ? observed_speed_ : 0.0;
+}
+
+void CreepDemoMover::apply_demo_root_motion(const Vector3 &model_delta, double physics_delta) {
+    if (phase_ != Phase::Moving || physics_delta <= 0.0) return;
+    // The model animation is evaluated once per fixed physics step by Godot.
+    // Translation is supplied in world-size units after scaling from the GLB.
+    const double distance = std::sqrt(static_cast<double>(model_delta.x) * model_delta.x +
+                                      static_cast<double>(model_delta.z) * model_delta.z);
+    if (!std::isfinite(distance) || distance < 0.00001 || distance > 1.0) return;
+    observed_speed_ = distance / physics_delta;
+    advance_along_fixture(distance, physics_delta);
 }
 
 double CreepDemoMover::get_demo_health_fraction() const {
@@ -88,8 +100,8 @@ double CreepDemoMover::get_demo_phase_seconds() const {
     return phase_seconds_;
 }
 
-void CreepDemoMover::advance_along_fixture(double delta) {
-    double remaining = kPreviewSpeed * delta;
+void CreepDemoMover::advance_along_fixture(double distance, double delta) {
+    double remaining = distance;
     // Consumes the full physics step even when crossing multiple waypoints.
     while (remaining > 0.0 && waypoint_index_ < static_cast<int>(kPreviewWaypoints.size())) {
         const Vector3 target = kPreviewWaypoints[waypoint_index_];
@@ -131,7 +143,7 @@ void CreepDemoMover::_physics_process(double delta) {
             }
             break;
         case Phase::Moving:
-            advance_along_fixture(delta);
+            // No independent C++ translation: consumed only from AnimationPlayer.
             break;
         case Phase::Dying:
             if (phase_seconds_ >= kCollapseSeconds) {

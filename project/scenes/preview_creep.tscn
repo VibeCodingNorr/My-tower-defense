@@ -1,6 +1,6 @@
 [gd_scene load_steps=9 format=3]
 
-[ext_resource type="PackedScene" path="res://assets/creeps/fox/Fox.glb" id="1_fox"]
+[ext_resource type="PackedScene" path="res://assets/creeps/fox/Fox_RootMotion.glb" id="1_fox"]
 [ext_resource type="Script" path="res://scripts/creep_preview_view.gd" id="2_view"]
 [ext_resource type="Shader" path="res://shaders/creep_contact_shadow.gdshader" id="3_shadow"]
 
