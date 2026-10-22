@@ -16,7 +16,7 @@ void WinterCameraRig::_ready() {
     pitch_pivot_ = memnew(Node3D);
     pitch_pivot_->set_name("PitchPivot");
     add_child(pitch_pivot_);
-    pitch_pivot_->set_rotation_degrees(Vector3(-62.0, 0.0, 0.0));
+    pitch_pivot_->set_rotation_degrees(Vector3(-57.0, 0.0, 0.0));
 
     camera_ = memnew(Camera3D);
     camera_->set_name("RTSCamera");
