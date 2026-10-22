@@ -207,3 +207,10 @@ Check the console for `M0.5.2: Root-motion track`, and look for the fox moving
 on the ice. If Godot's GLB importer renames or collapses the motion root node,
 the adapter reports a **clear error rather than silently returning to
 In-Place movement**.
+
+### Root-motion asset verification
+
+Run `python tools/verify_root_motion_glb.py` to confirm that the actual bundled
+GLB contains a 1.5m-per-cycle animated root translation. CI runs this test
+before building C++. The headless Godot test checks that this imported track
+moves the native C++ demo actor rather than relying on a separate speed.
