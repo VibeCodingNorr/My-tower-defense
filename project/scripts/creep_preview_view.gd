@@ -40,16 +40,27 @@ func _ready() -> void:
 
     var animation := player.get_animation(walk_root_clip)
     var candidate_paths: Array[String] = []
+    var strongest_delta: float = 0.0
+    var motion_path := NodePath()
     for i in range(animation.get_track_count()):
         if animation.track_get_type(i) != Animation.TYPE_POSITION_3D:
             continue
         var path := animation.track_get_path(i)
         candidate_paths.append(String(path))
-        if String(path).contains("WinterTD_MotionRoot"):
-            # The track is consumed, not also played onto the visual model.
-            player.root_motion_track = path
-            root_motion_valid = true
-            break
+        var begin := animation.position_track_interpolate(i, 0.0)
+        var end := animation.position_track_interpolate(i, animation.length)
+        var horizontal_travel := Vector2(end.x - begin.x, end.z - begin.z).length()
+        # The derived clip has 81+ source units of forward motion; ordinary
+        # Fox hip bob has no net displacement. Works if Godot renames the node.
+        if horizontal_travel > strongest_delta:
+            strongest_delta = horizontal_travel
+            motion_path = path
+
+    if strongest_delta > 20.0:
+        player.root_motion_track = motion_path
+        root_motion_valid = true
+    else:
+        push_error("M0.5.2: No translating root track in imported Walk_RootMotion.")
 
     if not root_motion_valid:
         push_error("M0.5.2: Imported GLB lost its root-motion translation path. " +
@@ -57,9 +68,16 @@ func _ready() -> void:
         set_physics_process(false)
         return
 
-    # Root motion is tested in a dedicated GLB, not simulated with _process().
+    # Loop the root-bearing animation, otherwise motion stops after 0.708s.
+    # The root-motion API handles extraction across loop boundaries.
+    animation.loop_mode = Animation.LOOP_LINEAR
+    var survey := player.get_animation(idle_clip)
+    if survey != null:
+        survey.loop_mode = Animation.LOOP_LINEAR
+
     print("M0.5.2: Root-motion track: ", player.root_motion_track,
-        " clip: ", walk_root_clip)
+        " clip: ", walk_root_clip,
+        " travel in source units: ", strongest_delta)
 
 
 func _physics_process(delta: float) -> void:
