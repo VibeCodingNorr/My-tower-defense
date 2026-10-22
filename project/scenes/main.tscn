@@ -1,46 +1,126 @@
-[gd_scene load_steps=15 format=3]
+[gd_scene load_steps=27 format=3]
 
 [ext_resource type="Shader" path="res://shaders/snow_ground.gdshader" id="1_snow"]
-[ext_resource type="Shader" path="res://shaders/ice_lane.gdshader" id="2_ice"]
-[ext_resource type="GDExtension" path="res://bin/wintertd.gdextension" id="3_ext"]
+[ext_resource type="GDExtension" path="res://bin/wintertd.gdextension" id="2_extension"]
 
-[sub_resource type="ShaderMaterial" id="SnowMaterial"]
+[sub_resource type="ShaderMaterial" id="WinterTerrainMaterial"]
 shader = ExtResource("1_snow")
 
-[sub_resource type="ShaderMaterial" id="IceMaterial"]
-shader = ExtResource("2_ice")
-
-[sub_resource type="PlaneMesh" id="GroundMesh"]
+[sub_resource type="PlaneMesh" id="WinterGroundMesh"]
 size = Vector2(96, 96)
 
-[sub_resource type="PlaneMesh" id="LaneMesh"]
-size = Vector2(1, 1)
+[sub_resource type="CylinderMesh" id="PlinthStoneMesh"]
+top_radius = 0.80
+bottom_radius = 0.98
+height = 0.30
+radial_segments = 8
+rings = 1
 
-[sub_resource type="CylinderMesh" id="PadMesh"]
-top_radius = 1.0
-bottom_radius = 1.0
-height = 0.25
-radial_segments = 16
-rings = 2
+[sub_resource type="CylinderMesh" id="PlinthColumnMesh"]
+top_radius = 0.39
+bottom_radius = 0.52
+height = 0.84
+radial_segments = 8
+rings = 1
 
-[sub_resource type="StandardMaterial3D" id="PadMaterial"]
-albedo_color = Color(0.46, 0.50, 0.54, 1)
-roughness = 0.92
+[sub_resource type="CylinderMesh" id="PlinthBeaconMesh"]
+top_radius = 0.03
+bottom_radius = 0.32
+height = 0.72
+radial_segments = 6
+rings = 1
 
-[sub_resource type="SphereMesh" id="RockMesh"]
+[sub_resource type="CylinderMesh" id="RockMesh"]
+top_radius = 0.70
+bottom_radius = 1.08
+height = 1.15
+radial_segments = 7
+rings = 1
+
+[sub_resource type="CylinderMesh" id="RockCapMesh"]
+top_radius = 0.56
+bottom_radius = 0.73
+height = 0.10
+radial_segments = 7
+rings = 1
+
+[sub_resource type="CylinderMesh" id="TreeTrunkMesh"]
+top_radius = 0.13
+bottom_radius = 0.21
+height = 1.15
+radial_segments = 6
+rings = 1
+
+[sub_resource type="CylinderMesh" id="TreeLowerMesh"]
+top_radius = 0.05
+bottom_radius = 0.98
+height = 1.90
+radial_segments = 7
+rings = 1
+
+[sub_resource type="CylinderMesh" id="TreeUpperMesh"]
+top_radius = 0.04
+bottom_radius = 0.66
+height = 1.50
+radial_segments = 7
+rings = 1
+
+[sub_resource type="CylinderMesh" id="TreeSnowMesh"]
+top_radius = 0.01
+bottom_radius = 0.29
+height = 0.53
+radial_segments = 7
+rings = 1
+
+[sub_resource type="SphereMesh" id="SnowDriftMesh"]
 radius = 1.0
 height = 2.0
-radial_segments = 9
-rings = 5
+radial_segments = 8
+rings = 4
+
+[sub_resource type="StandardMaterial3D" id="PlinthMaterial"]
+albedo_color = Color(0.28, 0.35, 0.39, 1)
+roughness = 0.90
+
+[sub_resource type="StandardMaterial3D" id="ColumnMaterial"]
+albedo_color = Color(0.40, 0.47, 0.49, 1)
+roughness = 0.91
+
+[sub_resource type="StandardMaterial3D" id="BeaconMaterial"]
+albedo_color = Color(0.32, 0.68, 0.72, 1)
+emission_enabled = true
+emission = Color(0.13, 0.32, 0.34, 1)
+emission_energy_multiplier = 0.28
+roughness = 0.38
 
 [sub_resource type="StandardMaterial3D" id="RockMaterial"]
-albedo_color = Color(0.36, 0.40, 0.42, 1)
-roughness = 0.98
+albedo_color = Color(0.26, 0.32, 0.34, 1)
+roughness = 0.95
+
+[sub_resource type="StandardMaterial3D" id="SnowCapMaterial"]
+albedo_color = Color(0.64, 0.71, 0.72, 1)
+roughness = 0.91
+
+[sub_resource type="StandardMaterial3D" id="TreeTrunkMaterial"]
+albedo_color = Color(0.27, 0.24, 0.22, 1)
+roughness = 0.91
+
+[sub_resource type="StandardMaterial3D" id="TreeLowerMaterial"]
+albedo_color = Color(0.16, 0.30, 0.30, 1)
+roughness = 0.95
+
+[sub_resource type="StandardMaterial3D" id="TreeUpperMaterial"]
+albedo_color = Color(0.23, 0.39, 0.38, 1)
+roughness = 0.95
+
+[sub_resource type="StandardMaterial3D" id="SnowDriftMaterial"]
+albedo_color = Color(0.52, 0.61, 0.64, 1)
+roughness = 1.0
 
 [sub_resource type="ProceduralSkyMaterial" id="SkyMaterial"]
-sky_top_color = Color(0.17, 0.26, 0.34, 1)
-sky_horizon_color = Color(0.70, 0.78, 0.84, 1)
-ground_bottom_color = Color(0.17, 0.22, 0.24, 1)
+sky_top_color = Color(0.17, 0.25, 0.32, 1)
+sky_horizon_color = Color(0.48, 0.59, 0.65, 1)
+ground_bottom_color = Color(0.21, 0.28, 0.31, 1)
 
 [sub_resource type="Sky" id="Sky"]
 sky_material = SubResource("SkyMaterial")
@@ -49,158 +129,800 @@ sky_material = SubResource("SkyMaterial")
 background_mode = 2
 sky = SubResource("Sky")
 ambient_light_source = 2
-ambient_light_color = Color(0.71, 0.80, 0.86, 1)
-ambient_light_energy = 0.34
+ambient_light_color = Color(0.68, 0.77, 0.80, 1)
+ambient_light_energy = 0.27
 reflected_light_source = 2
 
 [node name="WinterTD" type="Node3D"]
+
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment")
 
 [node name="Sun" type="DirectionalLight3D" parent="."]
 rotation_degrees = Vector3(-52, -28, 0)
-light_energy = 0.92
+light_energy = 0.78
 shadow_enabled = true
 
 [node name="Ground" type="MeshInstance3D" parent="."]
-mesh = SubResource("GroundMesh")
-material_override = SubResource("SnowMaterial")
+mesh = SubResource("WinterGroundMesh")
+material_override = SubResource("WinterTerrainMaterial")
 
 [node name="CameraRig" type="WinterCameraRig" parent="."]
 
-[node name="IceLane01" type="MeshInstance3D" parent="."]
-position = Vector3(0, 0.035, -16)
-scale = Vector3(32, 1, 4)
-mesh = SubResource("LaneMesh")
-material_override = SubResource("IceMaterial")
 
-[node name="IceLane02" type="MeshInstance3D" parent="."]
-position = Vector3(16, 0.045, -12)
-rotation_degrees = Vector3(0, 90, 0)
-scale = Vector3(8, 1, 4)
-mesh = SubResource("LaneMesh")
-material_override = SubResource("IceMaterial")
+[node name="BuildPad01" type="Node3D" parent="."]
+position = Vector3(-8, 0, -12)
 
-[node name="IceLane03" type="MeshInstance3D" parent="."]
-position = Vector3(0, 0.035, -8)
-scale = Vector3(32, 1, 4)
-mesh = SubResource("LaneMesh")
-material_override = SubResource("IceMaterial")
+[node name="StoneBase" type="MeshInstance3D" parent="BuildPad01"]
+position = Vector3(0, 0.17, 0)
+mesh = SubResource("PlinthStoneMesh")
+material_override = SubResource("PlinthMaterial")
 
-[node name="IceLane04" type="MeshInstance3D" parent="."]
-position = Vector3(-16, 0.045, -4)
-rotation_degrees = Vector3(0, 90, 0)
-scale = Vector3(8, 1, 4)
-mesh = SubResource("LaneMesh")
-material_override = SubResource("IceMaterial")
+[node name="TowerScaleMarker" type="MeshInstance3D" parent="BuildPad01"]
+position = Vector3(0, 0.69, 0)
+mesh = SubResource("PlinthColumnMesh")
+material_override = SubResource("ColumnMaterial")
 
-[node name="IceLane05" type="MeshInstance3D" parent="."]
-position = Vector3(0, 0.035, 0)
-scale = Vector3(32, 1, 4)
-mesh = SubResource("LaneMesh")
-material_override = SubResource("IceMaterial")
+[node name="FrostBeacon" type="MeshInstance3D" parent="BuildPad01"]
+position = Vector3(0, 1.47, 0)
+mesh = SubResource("PlinthBeaconMesh")
+material_override = SubResource("BeaconMaterial")
 
-[node name="IceLane06" type="MeshInstance3D" parent="."]
-position = Vector3(16, 0.045, 4)
-rotation_degrees = Vector3(0, 90, 0)
-scale = Vector3(8, 1, 4)
-mesh = SubResource("LaneMesh")
-material_override = SubResource("IceMaterial")
+[node name="BuildPad02" type="Node3D" parent="."]
+position = Vector3(8, 0, -4)
 
-[node name="IceLane07" type="MeshInstance3D" parent="."]
-position = Vector3(0, 0.035, 8)
-scale = Vector3(32, 1, 4)
-mesh = SubResource("LaneMesh")
-material_override = SubResource("IceMaterial")
+[node name="StoneBase" type="MeshInstance3D" parent="BuildPad02"]
+position = Vector3(0, 0.17, 0)
+mesh = SubResource("PlinthStoneMesh")
+material_override = SubResource("PlinthMaterial")
 
-[node name="IceLane08" type="MeshInstance3D" parent="."]
-position = Vector3(-16, 0.045, 12)
-rotation_degrees = Vector3(0, 90, 0)
-scale = Vector3(8, 1, 4)
-mesh = SubResource("LaneMesh")
-material_override = SubResource("IceMaterial")
+[node name="TowerScaleMarker" type="MeshInstance3D" parent="BuildPad02"]
+position = Vector3(0, 0.69, 0)
+mesh = SubResource("PlinthColumnMesh")
+material_override = SubResource("ColumnMaterial")
 
-[node name="IceLane09" type="MeshInstance3D" parent="."]
-position = Vector3(0, 0.035, 16)
-scale = Vector3(32, 1, 4)
-mesh = SubResource("LaneMesh")
-material_override = SubResource("IceMaterial")
+[node name="FrostBeacon" type="MeshInstance3D" parent="BuildPad02"]
+position = Vector3(0, 1.47, 0)
+mesh = SubResource("PlinthBeaconMesh")
+material_override = SubResource("BeaconMaterial")
 
-[node name="BuildPad01" type="MeshInstance3D" parent="."]
-position = Vector3(-8, 0.14, -12)
-mesh = SubResource("PadMesh")
-material_override = SubResource("PadMaterial")
+[node name="BuildPad03" type="Node3D" parent="."]
+position = Vector3(-3, 0, 4)
 
-[node name="BuildPad02" type="MeshInstance3D" parent="."]
-position = Vector3(8, 0.14, -4)
-mesh = SubResource("PadMesh")
-material_override = SubResource("PadMaterial")
+[node name="StoneBase" type="MeshInstance3D" parent="BuildPad03"]
+position = Vector3(0, 0.17, 0)
+mesh = SubResource("PlinthStoneMesh")
+material_override = SubResource("PlinthMaterial")
 
-[node name="BuildPad03" type="MeshInstance3D" parent="."]
-position = Vector3(-3, 0.14, 4)
-mesh = SubResource("PadMesh")
-material_override = SubResource("PadMaterial")
+[node name="TowerScaleMarker" type="MeshInstance3D" parent="BuildPad03"]
+position = Vector3(0, 0.69, 0)
+mesh = SubResource("PlinthColumnMesh")
+material_override = SubResource("ColumnMaterial")
 
-[node name="BuildPad04" type="MeshInstance3D" parent="."]
-position = Vector3(-8, 0.14, 12)
-mesh = SubResource("PadMesh")
-material_override = SubResource("PadMaterial")
+[node name="FrostBeacon" type="MeshInstance3D" parent="BuildPad03"]
+position = Vector3(0, 1.47, 0)
+mesh = SubResource("PlinthBeaconMesh")
+material_override = SubResource("BeaconMaterial")
 
-[node name="BuildPad05" type="MeshInstance3D" parent="."]
-position = Vector3(8, 0.14, -12)
-mesh = SubResource("PadMesh")
-material_override = SubResource("PadMaterial")
+[node name="BuildPad04" type="Node3D" parent="."]
+position = Vector3(-8, 0, 12)
 
-[node name="Rock01" type="MeshInstance3D" parent="."]
-position = Vector3(-25, 1.1, -16)
-scale = Vector3(1.8, 1.1, 1.4)
+[node name="StoneBase" type="MeshInstance3D" parent="BuildPad04"]
+position = Vector3(0, 0.17, 0)
+mesh = SubResource("PlinthStoneMesh")
+material_override = SubResource("PlinthMaterial")
+
+[node name="TowerScaleMarker" type="MeshInstance3D" parent="BuildPad04"]
+position = Vector3(0, 0.69, 0)
+mesh = SubResource("PlinthColumnMesh")
+material_override = SubResource("ColumnMaterial")
+
+[node name="FrostBeacon" type="MeshInstance3D" parent="BuildPad04"]
+position = Vector3(0, 1.47, 0)
+mesh = SubResource("PlinthBeaconMesh")
+material_override = SubResource("BeaconMaterial")
+
+[node name="BuildPad05" type="Node3D" parent="."]
+position = Vector3(8, 0, -12)
+
+[node name="StoneBase" type="MeshInstance3D" parent="BuildPad05"]
+position = Vector3(0, 0.17, 0)
+mesh = SubResource("PlinthStoneMesh")
+material_override = SubResource("PlinthMaterial")
+
+[node name="TowerScaleMarker" type="MeshInstance3D" parent="BuildPad05"]
+position = Vector3(0, 0.69, 0)
+mesh = SubResource("PlinthColumnMesh")
+material_override = SubResource("ColumnMaterial")
+
+[node name="FrostBeacon" type="MeshInstance3D" parent="BuildPad05"]
+position = Vector3(0, 1.47, 0)
+mesh = SubResource("PlinthBeaconMesh")
+material_override = SubResource("BeaconMaterial")
+
+[node name="Rock01" type="Node3D" parent="."]
+position = Vector3(-25, 0, -16)
+scale = Vector3(1.06, 0.9752000000000001, 1.06)
+rotation_degrees = Vector3(0, 0, 0)
+
+[node name="Basalt" type="MeshInstance3D" parent="Rock01"]
+position = Vector3(0, 0.57, 0)
 mesh = SubResource("RockMesh")
 material_override = SubResource("RockMaterial")
 
-[node name="Rock02" type="MeshInstance3D" parent="."]
-position = Vector3(-22, 0.9, 3)
-scale = Vector3(1.2, 0.9, 1.1)
+[node name="Snowcap" type="MeshInstance3D" parent="Rock01"]
+position = Vector3(0, 1.19, 0)
+mesh = SubResource("RockCapMesh")
+material_override = SubResource("SnowCapMaterial")
+
+[node name="Rock02" type="Node3D" parent="."]
+position = Vector3(-23, 0, -3)
+scale = Vector3(0.73, 0.6716, 0.73)
+rotation_degrees = Vector3(0, 37, 0)
+
+[node name="Basalt" type="MeshInstance3D" parent="Rock02"]
+position = Vector3(0, 0.57, 0)
 mesh = SubResource("RockMesh")
 material_override = SubResource("RockMaterial")
 
-[node name="Rock03" type="MeshInstance3D" parent="."]
-position = Vector3(-22, 1, 20)
-scale = Vector3(1.6, 1, 1.4)
+[node name="Snowcap" type="MeshInstance3D" parent="Rock02"]
+position = Vector3(0, 1.19, 0)
+mesh = SubResource("RockCapMesh")
+material_override = SubResource("SnowCapMaterial")
+
+[node name="Rock03" type="Node3D" parent="."]
+position = Vector3(-22, 0, 13)
+scale = Vector3(1.1, 1.0120000000000002, 1.1)
+rotation_degrees = Vector3(0, 74, 0)
+
+[node name="Basalt" type="MeshInstance3D" parent="Rock03"]
+position = Vector3(0, 0.57, 0)
 mesh = SubResource("RockMesh")
 material_override = SubResource("RockMaterial")
 
-[node name="Rock04" type="MeshInstance3D" parent="."]
-position = Vector3(24, 0.9, -6)
-scale = Vector3(1.4, 0.9, 1.3)
+[node name="Snowcap" type="MeshInstance3D" parent="Rock03"]
+position = Vector3(0, 1.19, 0)
+mesh = SubResource("RockCapMesh")
+material_override = SubResource("SnowCapMaterial")
+
+[node name="Rock04" type="Node3D" parent="."]
+position = Vector3(-25, 0, 23)
+scale = Vector3(0.8, 0.7360000000000001, 0.8)
+rotation_degrees = Vector3(0, 111, 0)
+
+[node name="Basalt" type="MeshInstance3D" parent="Rock04"]
+position = Vector3(0, 0.57, 0)
 mesh = SubResource("RockMesh")
 material_override = SubResource("RockMaterial")
 
-[node name="Rock05" type="MeshInstance3D" parent="."]
-position = Vector3(23, 1, 19)
-scale = Vector3(1.7, 1, 1.5)
+[node name="Snowcap" type="MeshInstance3D" parent="Rock04"]
+position = Vector3(0, 1.19, 0)
+mesh = SubResource("RockCapMesh")
+material_override = SubResource("SnowCapMaterial")
+
+[node name="Rock05" type="Node3D" parent="."]
+position = Vector3(25, 0, -16)
+scale = Vector3(0.88, 0.8096, 0.88)
+rotation_degrees = Vector3(0, 148, 0)
+
+[node name="Basalt" type="MeshInstance3D" parent="Rock05"]
+position = Vector3(0, 0.57, 0)
 mesh = SubResource("RockMesh")
 material_override = SubResource("RockMaterial")
 
-[node name="Rock06" type="MeshInstance3D" parent="."]
-position = Vector3(25, 1.1, -22)
-scale = Vector3(1.5, 1.1, 1.5)
+[node name="Snowcap" type="MeshInstance3D" parent="Rock05"]
+position = Vector3(0, 1.19, 0)
+mesh = SubResource("RockCapMesh")
+material_override = SubResource("SnowCapMaterial")
+
+[node name="Rock06" type="Node3D" parent="."]
+position = Vector3(24, 0, -3)
+scale = Vector3(1.05, 0.9660000000000001, 1.05)
+rotation_degrees = Vector3(0, 185, 0)
+
+[node name="Basalt" type="MeshInstance3D" parent="Rock06"]
+position = Vector3(0, 0.57, 0)
 mesh = SubResource("RockMesh")
 material_override = SubResource("RockMaterial")
+
+[node name="Snowcap" type="MeshInstance3D" parent="Rock06"]
+position = Vector3(0, 1.19, 0)
+mesh = SubResource("RockCapMesh")
+material_override = SubResource("SnowCapMaterial")
+
+[node name="Rock07" type="Node3D" parent="."]
+position = Vector3(26, 0, 12)
+scale = Vector3(0.75, 0.6900000000000001, 0.75)
+rotation_degrees = Vector3(0, 222, 0)
+
+[node name="Basalt" type="MeshInstance3D" parent="Rock07"]
+position = Vector3(0, 0.57, 0)
+mesh = SubResource("RockMesh")
+material_override = SubResource("RockMaterial")
+
+[node name="Snowcap" type="MeshInstance3D" parent="Rock07"]
+position = Vector3(0, 1.19, 0)
+mesh = SubResource("RockCapMesh")
+material_override = SubResource("SnowCapMaterial")
+
+[node name="Rock08" type="Node3D" parent="."]
+position = Vector3(23, 0, 23)
+scale = Vector3(1.07, 0.9844, 1.07)
+rotation_degrees = Vector3(0, 259, 0)
+
+[node name="Basalt" type="MeshInstance3D" parent="Rock08"]
+position = Vector3(0, 0.57, 0)
+mesh = SubResource("RockMesh")
+material_override = SubResource("RockMaterial")
+
+[node name="Snowcap" type="MeshInstance3D" parent="Rock08"]
+position = Vector3(0, 1.19, 0)
+mesh = SubResource("RockCapMesh")
+material_override = SubResource("SnowCapMaterial")
+
+[node name="Rock09" type="Node3D" parent="."]
+position = Vector3(-10, 0, -24)
+scale = Vector3(0.7, 0.644, 0.7)
+rotation_degrees = Vector3(0, 296, 0)
+
+[node name="Basalt" type="MeshInstance3D" parent="Rock09"]
+position = Vector3(0, 0.57, 0)
+mesh = SubResource("RockMesh")
+material_override = SubResource("RockMaterial")
+
+[node name="Snowcap" type="MeshInstance3D" parent="Rock09"]
+position = Vector3(0, 1.19, 0)
+mesh = SubResource("RockCapMesh")
+material_override = SubResource("SnowCapMaterial")
+
+[node name="Rock10" type="Node3D" parent="."]
+position = Vector3(10, 0, 25)
+scale = Vector3(0.81, 0.7452000000000001, 0.81)
+rotation_degrees = Vector3(0, 333, 0)
+
+[node name="Basalt" type="MeshInstance3D" parent="Rock10"]
+position = Vector3(0, 0.57, 0)
+mesh = SubResource("RockMesh")
+material_override = SubResource("RockMaterial")
+
+[node name="Snowcap" type="MeshInstance3D" parent="Rock10"]
+position = Vector3(0, 1.19, 0)
+mesh = SubResource("RockCapMesh")
+material_override = SubResource("SnowCapMaterial")
+
+[node name="Spruce01" type="Node3D" parent="."]
+position = Vector3(-30, 0, -25)
+rotation_degrees = Vector3(0, 0, 0)
+scale = Vector3(1.1, 1.1, 1.1)
+
+[node name="Trunk" type="MeshInstance3D" parent="Spruce01"]
+position = Vector3(0, 0.6, 0)
+mesh = SubResource("TreeTrunkMesh")
+material_override = SubResource("TreeTrunkMaterial")
+
+[node name="LowerNeedles" type="MeshInstance3D" parent="Spruce01"]
+position = Vector3(0, 1.35, 0)
+mesh = SubResource("TreeLowerMesh")
+material_override = SubResource("TreeLowerMaterial")
+
+[node name="UpperNeedles" type="MeshInstance3D" parent="Spruce01"]
+position = Vector3(0, 2.16, 0)
+mesh = SubResource("TreeUpperMesh")
+material_override = SubResource("TreeUpperMaterial")
+
+[node name="SnowTip" type="MeshInstance3D" parent="Spruce01"]
+position = Vector3(0, 2.94, 0)
+mesh = SubResource("TreeSnowMesh")
+material_override = SubResource("SnowCapMaterial")
+
+[node name="Spruce02" type="Node3D" parent="."]
+position = Vector3(-27, 0, -20)
+rotation_degrees = Vector3(0, 47, 0)
+scale = Vector3(0.86, 0.86, 0.86)
+
+[node name="Trunk" type="MeshInstance3D" parent="Spruce02"]
+position = Vector3(0, 0.6, 0)
+mesh = SubResource("TreeTrunkMesh")
+material_override = SubResource("TreeTrunkMaterial")
+
+[node name="LowerNeedles" type="MeshInstance3D" parent="Spruce02"]
+position = Vector3(0, 1.35, 0)
+mesh = SubResource("TreeLowerMesh")
+material_override = SubResource("TreeLowerMaterial")
+
+[node name="UpperNeedles" type="MeshInstance3D" parent="Spruce02"]
+position = Vector3(0, 2.16, 0)
+mesh = SubResource("TreeUpperMesh")
+material_override = SubResource("TreeUpperMaterial")
+
+[node name="SnowTip" type="MeshInstance3D" parent="Spruce02"]
+position = Vector3(0, 2.94, 0)
+mesh = SubResource("TreeSnowMesh")
+material_override = SubResource("SnowCapMaterial")
+
+[node name="Spruce03" type="Node3D" parent="."]
+position = Vector3(-33, 0, -14)
+rotation_degrees = Vector3(0, 94, 0)
+scale = Vector3(1.25, 1.25, 1.25)
+
+[node name="Trunk" type="MeshInstance3D" parent="Spruce03"]
+position = Vector3(0, 0.6, 0)
+mesh = SubResource("TreeTrunkMesh")
+material_override = SubResource("TreeTrunkMaterial")
+
+[node name="LowerNeedles" type="MeshInstance3D" parent="Spruce03"]
+position = Vector3(0, 1.35, 0)
+mesh = SubResource("TreeLowerMesh")
+material_override = SubResource("TreeLowerMaterial")
+
+[node name="UpperNeedles" type="MeshInstance3D" parent="Spruce03"]
+position = Vector3(0, 2.16, 0)
+mesh = SubResource("TreeUpperMesh")
+material_override = SubResource("TreeUpperMaterial")
+
+[node name="SnowTip" type="MeshInstance3D" parent="Spruce03"]
+position = Vector3(0, 2.94, 0)
+mesh = SubResource("TreeSnowMesh")
+material_override = SubResource("SnowCapMaterial")
+
+[node name="Spruce04" type="Node3D" parent="."]
+position = Vector3(-29, 0, -7)
+rotation_degrees = Vector3(0, 141, 0)
+scale = Vector3(0.88, 0.88, 0.88)
+
+[node name="Trunk" type="MeshInstance3D" parent="Spruce04"]
+position = Vector3(0, 0.6, 0)
+mesh = SubResource("TreeTrunkMesh")
+material_override = SubResource("TreeTrunkMaterial")
+
+[node name="LowerNeedles" type="MeshInstance3D" parent="Spruce04"]
+position = Vector3(0, 1.35, 0)
+mesh = SubResource("TreeLowerMesh")
+material_override = SubResource("TreeLowerMaterial")
+
+[node name="UpperNeedles" type="MeshInstance3D" parent="Spruce04"]
+position = Vector3(0, 2.16, 0)
+mesh = SubResource("TreeUpperMesh")
+material_override = SubResource("TreeUpperMaterial")
+
+[node name="SnowTip" type="MeshInstance3D" parent="Spruce04"]
+position = Vector3(0, 2.94, 0)
+mesh = SubResource("TreeSnowMesh")
+material_override = SubResource("SnowCapMaterial")
+
+[node name="Spruce05" type="Node3D" parent="."]
+position = Vector3(-31, 0, 1)
+rotation_degrees = Vector3(0, 188, 0)
+scale = Vector3(1.08, 1.08, 1.08)
+
+[node name="Trunk" type="MeshInstance3D" parent="Spruce05"]
+position = Vector3(0, 0.6, 0)
+mesh = SubResource("TreeTrunkMesh")
+material_override = SubResource("TreeTrunkMaterial")
+
+[node name="LowerNeedles" type="MeshInstance3D" parent="Spruce05"]
+position = Vector3(0, 1.35, 0)
+mesh = SubResource("TreeLowerMesh")
+material_override = SubResource("TreeLowerMaterial")
+
+[node name="UpperNeedles" type="MeshInstance3D" parent="Spruce05"]
+position = Vector3(0, 2.16, 0)
+mesh = SubResource("TreeUpperMesh")
+material_override = SubResource("TreeUpperMaterial")
+
+[node name="SnowTip" type="MeshInstance3D" parent="Spruce05"]
+position = Vector3(0, 2.94, 0)
+mesh = SubResource("TreeSnowMesh")
+material_override = SubResource("SnowCapMaterial")
+
+[node name="Spruce06" type="Node3D" parent="."]
+position = Vector3(-27, 0, 8)
+rotation_degrees = Vector3(0, 235, 0)
+scale = Vector3(0.9, 0.9, 0.9)
+
+[node name="Trunk" type="MeshInstance3D" parent="Spruce06"]
+position = Vector3(0, 0.6, 0)
+mesh = SubResource("TreeTrunkMesh")
+material_override = SubResource("TreeTrunkMaterial")
+
+[node name="LowerNeedles" type="MeshInstance3D" parent="Spruce06"]
+position = Vector3(0, 1.35, 0)
+mesh = SubResource("TreeLowerMesh")
+material_override = SubResource("TreeLowerMaterial")
+
+[node name="UpperNeedles" type="MeshInstance3D" parent="Spruce06"]
+position = Vector3(0, 2.16, 0)
+mesh = SubResource("TreeUpperMesh")
+material_override = SubResource("TreeUpperMaterial")
+
+[node name="SnowTip" type="MeshInstance3D" parent="Spruce06"]
+position = Vector3(0, 2.94, 0)
+mesh = SubResource("TreeSnowMesh")
+material_override = SubResource("SnowCapMaterial")
+
+[node name="Spruce07" type="Node3D" parent="."]
+position = Vector3(-31, 0, 16)
+rotation_degrees = Vector3(0, 282, 0)
+scale = Vector3(1.22, 1.22, 1.22)
+
+[node name="Trunk" type="MeshInstance3D" parent="Spruce07"]
+position = Vector3(0, 0.6, 0)
+mesh = SubResource("TreeTrunkMesh")
+material_override = SubResource("TreeTrunkMaterial")
+
+[node name="LowerNeedles" type="MeshInstance3D" parent="Spruce07"]
+position = Vector3(0, 1.35, 0)
+mesh = SubResource("TreeLowerMesh")
+material_override = SubResource("TreeLowerMaterial")
+
+[node name="UpperNeedles" type="MeshInstance3D" parent="Spruce07"]
+position = Vector3(0, 2.16, 0)
+mesh = SubResource("TreeUpperMesh")
+material_override = SubResource("TreeUpperMaterial")
+
+[node name="SnowTip" type="MeshInstance3D" parent="Spruce07"]
+position = Vector3(0, 2.94, 0)
+mesh = SubResource("TreeSnowMesh")
+material_override = SubResource("SnowCapMaterial")
+
+[node name="Spruce08" type="Node3D" parent="."]
+position = Vector3(-27, 0, 22)
+rotation_degrees = Vector3(0, 329, 0)
+scale = Vector3(0.82, 0.82, 0.82)
+
+[node name="Trunk" type="MeshInstance3D" parent="Spruce08"]
+position = Vector3(0, 0.6, 0)
+mesh = SubResource("TreeTrunkMesh")
+material_override = SubResource("TreeTrunkMaterial")
+
+[node name="LowerNeedles" type="MeshInstance3D" parent="Spruce08"]
+position = Vector3(0, 1.35, 0)
+mesh = SubResource("TreeLowerMesh")
+material_override = SubResource("TreeLowerMaterial")
+
+[node name="UpperNeedles" type="MeshInstance3D" parent="Spruce08"]
+position = Vector3(0, 2.16, 0)
+mesh = SubResource("TreeUpperMesh")
+material_override = SubResource("TreeUpperMaterial")
+
+[node name="SnowTip" type="MeshInstance3D" parent="Spruce08"]
+position = Vector3(0, 2.94, 0)
+mesh = SubResource("TreeSnowMesh")
+material_override = SubResource("SnowCapMaterial")
+
+[node name="Spruce09" type="Node3D" parent="."]
+position = Vector3(-33, 0, 29)
+rotation_degrees = Vector3(0, 376, 0)
+scale = Vector3(1.03, 1.03, 1.03)
+
+[node name="Trunk" type="MeshInstance3D" parent="Spruce09"]
+position = Vector3(0, 0.6, 0)
+mesh = SubResource("TreeTrunkMesh")
+material_override = SubResource("TreeTrunkMaterial")
+
+[node name="LowerNeedles" type="MeshInstance3D" parent="Spruce09"]
+position = Vector3(0, 1.35, 0)
+mesh = SubResource("TreeLowerMesh")
+material_override = SubResource("TreeLowerMaterial")
+
+[node name="UpperNeedles" type="MeshInstance3D" parent="Spruce09"]
+position = Vector3(0, 2.16, 0)
+mesh = SubResource("TreeUpperMesh")
+material_override = SubResource("TreeUpperMaterial")
+
+[node name="SnowTip" type="MeshInstance3D" parent="Spruce09"]
+position = Vector3(0, 2.94, 0)
+mesh = SubResource("TreeSnowMesh")
+material_override = SubResource("SnowCapMaterial")
+
+[node name="Spruce10" type="Node3D" parent="."]
+position = Vector3(30, 0, -27)
+rotation_degrees = Vector3(0, 423, 0)
+scale = Vector3(1.08, 1.08, 1.08)
+
+[node name="Trunk" type="MeshInstance3D" parent="Spruce10"]
+position = Vector3(0, 0.6, 0)
+mesh = SubResource("TreeTrunkMesh")
+material_override = SubResource("TreeTrunkMaterial")
+
+[node name="LowerNeedles" type="MeshInstance3D" parent="Spruce10"]
+position = Vector3(0, 1.35, 0)
+mesh = SubResource("TreeLowerMesh")
+material_override = SubResource("TreeLowerMaterial")
+
+[node name="UpperNeedles" type="MeshInstance3D" parent="Spruce10"]
+position = Vector3(0, 2.16, 0)
+mesh = SubResource("TreeUpperMesh")
+material_override = SubResource("TreeUpperMaterial")
+
+[node name="SnowTip" type="MeshInstance3D" parent="Spruce10"]
+position = Vector3(0, 2.94, 0)
+mesh = SubResource("TreeSnowMesh")
+material_override = SubResource("SnowCapMaterial")
+
+[node name="Spruce11" type="Node3D" parent="."]
+position = Vector3(27, 0, -21)
+rotation_degrees = Vector3(0, 470, 0)
+scale = Vector3(0.86, 0.86, 0.86)
+
+[node name="Trunk" type="MeshInstance3D" parent="Spruce11"]
+position = Vector3(0, 0.6, 0)
+mesh = SubResource("TreeTrunkMesh")
+material_override = SubResource("TreeTrunkMaterial")
+
+[node name="LowerNeedles" type="MeshInstance3D" parent="Spruce11"]
+position = Vector3(0, 1.35, 0)
+mesh = SubResource("TreeLowerMesh")
+material_override = SubResource("TreeLowerMaterial")
+
+[node name="UpperNeedles" type="MeshInstance3D" parent="Spruce11"]
+position = Vector3(0, 2.16, 0)
+mesh = SubResource("TreeUpperMesh")
+material_override = SubResource("TreeUpperMaterial")
+
+[node name="SnowTip" type="MeshInstance3D" parent="Spruce11"]
+position = Vector3(0, 2.94, 0)
+mesh = SubResource("TreeSnowMesh")
+material_override = SubResource("SnowCapMaterial")
+
+[node name="Spruce12" type="Node3D" parent="."]
+position = Vector3(32, 0, -13)
+rotation_degrees = Vector3(0, 517, 0)
+scale = Vector3(1.23, 1.23, 1.23)
+
+[node name="Trunk" type="MeshInstance3D" parent="Spruce12"]
+position = Vector3(0, 0.6, 0)
+mesh = SubResource("TreeTrunkMesh")
+material_override = SubResource("TreeTrunkMaterial")
+
+[node name="LowerNeedles" type="MeshInstance3D" parent="Spruce12"]
+position = Vector3(0, 1.35, 0)
+mesh = SubResource("TreeLowerMesh")
+material_override = SubResource("TreeLowerMaterial")
+
+[node name="UpperNeedles" type="MeshInstance3D" parent="Spruce12"]
+position = Vector3(0, 2.16, 0)
+mesh = SubResource("TreeUpperMesh")
+material_override = SubResource("TreeUpperMaterial")
+
+[node name="SnowTip" type="MeshInstance3D" parent="Spruce12"]
+position = Vector3(0, 2.94, 0)
+mesh = SubResource("TreeSnowMesh")
+material_override = SubResource("SnowCapMaterial")
+
+[node name="Spruce13" type="Node3D" parent="."]
+position = Vector3(28, 0, -4)
+rotation_degrees = Vector3(0, 564, 0)
+scale = Vector3(0.93, 0.93, 0.93)
+
+[node name="Trunk" type="MeshInstance3D" parent="Spruce13"]
+position = Vector3(0, 0.6, 0)
+mesh = SubResource("TreeTrunkMesh")
+material_override = SubResource("TreeTrunkMaterial")
+
+[node name="LowerNeedles" type="MeshInstance3D" parent="Spruce13"]
+position = Vector3(0, 1.35, 0)
+mesh = SubResource("TreeLowerMesh")
+material_override = SubResource("TreeLowerMaterial")
+
+[node name="UpperNeedles" type="MeshInstance3D" parent="Spruce13"]
+position = Vector3(0, 2.16, 0)
+mesh = SubResource("TreeUpperMesh")
+material_override = SubResource("TreeUpperMaterial")
+
+[node name="SnowTip" type="MeshInstance3D" parent="Spruce13"]
+position = Vector3(0, 2.94, 0)
+mesh = SubResource("TreeSnowMesh")
+material_override = SubResource("SnowCapMaterial")
+
+[node name="Spruce14" type="Node3D" parent="."]
+position = Vector3(32, 0, 4)
+rotation_degrees = Vector3(0, 611, 0)
+scale = Vector3(1.1, 1.1, 1.1)
+
+[node name="Trunk" type="MeshInstance3D" parent="Spruce14"]
+position = Vector3(0, 0.6, 0)
+mesh = SubResource("TreeTrunkMesh")
+material_override = SubResource("TreeTrunkMaterial")
+
+[node name="LowerNeedles" type="MeshInstance3D" parent="Spruce14"]
+position = Vector3(0, 1.35, 0)
+mesh = SubResource("TreeLowerMesh")
+material_override = SubResource("TreeLowerMaterial")
+
+[node name="UpperNeedles" type="MeshInstance3D" parent="Spruce14"]
+position = Vector3(0, 2.16, 0)
+mesh = SubResource("TreeUpperMesh")
+material_override = SubResource("TreeUpperMaterial")
+
+[node name="SnowTip" type="MeshInstance3D" parent="Spruce14"]
+position = Vector3(0, 2.94, 0)
+mesh = SubResource("TreeSnowMesh")
+material_override = SubResource("SnowCapMaterial")
+
+[node name="Spruce15" type="Node3D" parent="."]
+position = Vector3(27, 0, 11)
+rotation_degrees = Vector3(0, 658, 0)
+scale = Vector3(0.84, 0.84, 0.84)
+
+[node name="Trunk" type="MeshInstance3D" parent="Spruce15"]
+position = Vector3(0, 0.6, 0)
+mesh = SubResource("TreeTrunkMesh")
+material_override = SubResource("TreeTrunkMaterial")
+
+[node name="LowerNeedles" type="MeshInstance3D" parent="Spruce15"]
+position = Vector3(0, 1.35, 0)
+mesh = SubResource("TreeLowerMesh")
+material_override = SubResource("TreeLowerMaterial")
+
+[node name="UpperNeedles" type="MeshInstance3D" parent="Spruce15"]
+position = Vector3(0, 2.16, 0)
+mesh = SubResource("TreeUpperMesh")
+material_override = SubResource("TreeUpperMaterial")
+
+[node name="SnowTip" type="MeshInstance3D" parent="Spruce15"]
+position = Vector3(0, 2.94, 0)
+mesh = SubResource("TreeSnowMesh")
+material_override = SubResource("SnowCapMaterial")
+
+[node name="Spruce16" type="Node3D" parent="."]
+position = Vector3(32, 0, 20)
+rotation_degrees = Vector3(0, 705, 0)
+scale = Vector3(1.18, 1.18, 1.18)
+
+[node name="Trunk" type="MeshInstance3D" parent="Spruce16"]
+position = Vector3(0, 0.6, 0)
+mesh = SubResource("TreeTrunkMesh")
+material_override = SubResource("TreeTrunkMaterial")
+
+[node name="LowerNeedles" type="MeshInstance3D" parent="Spruce16"]
+position = Vector3(0, 1.35, 0)
+mesh = SubResource("TreeLowerMesh")
+material_override = SubResource("TreeLowerMaterial")
+
+[node name="UpperNeedles" type="MeshInstance3D" parent="Spruce16"]
+position = Vector3(0, 2.16, 0)
+mesh = SubResource("TreeUpperMesh")
+material_override = SubResource("TreeUpperMaterial")
+
+[node name="SnowTip" type="MeshInstance3D" parent="Spruce16"]
+position = Vector3(0, 2.94, 0)
+mesh = SubResource("TreeSnowMesh")
+material_override = SubResource("SnowCapMaterial")
+
+[node name="Spruce17" type="Node3D" parent="."]
+position = Vector3(28, 0, 27)
+rotation_degrees = Vector3(0, 752, 0)
+scale = Vector3(0.96, 0.96, 0.96)
+
+[node name="Trunk" type="MeshInstance3D" parent="Spruce17"]
+position = Vector3(0, 0.6, 0)
+mesh = SubResource("TreeTrunkMesh")
+material_override = SubResource("TreeTrunkMaterial")
+
+[node name="LowerNeedles" type="MeshInstance3D" parent="Spruce17"]
+position = Vector3(0, 1.35, 0)
+mesh = SubResource("TreeLowerMesh")
+material_override = SubResource("TreeLowerMaterial")
+
+[node name="UpperNeedles" type="MeshInstance3D" parent="Spruce17"]
+position = Vector3(0, 2.16, 0)
+mesh = SubResource("TreeUpperMesh")
+material_override = SubResource("TreeUpperMaterial")
+
+[node name="SnowTip" type="MeshInstance3D" parent="Spruce17"]
+position = Vector3(0, 2.94, 0)
+mesh = SubResource("TreeSnowMesh")
+material_override = SubResource("SnowCapMaterial")
+
+[node name="Spruce18" type="Node3D" parent="."]
+position = Vector3(-12, 0, 29)
+rotation_degrees = Vector3(0, 799, 0)
+scale = Vector3(0.72, 0.72, 0.72)
+
+[node name="Trunk" type="MeshInstance3D" parent="Spruce18"]
+position = Vector3(0, 0.6, 0)
+mesh = SubResource("TreeTrunkMesh")
+material_override = SubResource("TreeTrunkMaterial")
+
+[node name="LowerNeedles" type="MeshInstance3D" parent="Spruce18"]
+position = Vector3(0, 1.35, 0)
+mesh = SubResource("TreeLowerMesh")
+material_override = SubResource("TreeLowerMaterial")
+
+[node name="UpperNeedles" type="MeshInstance3D" parent="Spruce18"]
+position = Vector3(0, 2.16, 0)
+mesh = SubResource("TreeUpperMesh")
+material_override = SubResource("TreeUpperMaterial")
+
+[node name="SnowTip" type="MeshInstance3D" parent="Spruce18"]
+position = Vector3(0, 2.94, 0)
+mesh = SubResource("TreeSnowMesh")
+material_override = SubResource("SnowCapMaterial")
+
+[node name="Spruce19" type="Node3D" parent="."]
+position = Vector3(15, 0, 29)
+rotation_degrees = Vector3(0, 846, 0)
+scale = Vector3(0.88, 0.88, 0.88)
+
+[node name="Trunk" type="MeshInstance3D" parent="Spruce19"]
+position = Vector3(0, 0.6, 0)
+mesh = SubResource("TreeTrunkMesh")
+material_override = SubResource("TreeTrunkMaterial")
+
+[node name="LowerNeedles" type="MeshInstance3D" parent="Spruce19"]
+position = Vector3(0, 1.35, 0)
+mesh = SubResource("TreeLowerMesh")
+material_override = SubResource("TreeLowerMaterial")
+
+[node name="UpperNeedles" type="MeshInstance3D" parent="Spruce19"]
+position = Vector3(0, 2.16, 0)
+mesh = SubResource("TreeUpperMesh")
+material_override = SubResource("TreeUpperMaterial")
+
+[node name="SnowTip" type="MeshInstance3D" parent="Spruce19"]
+position = Vector3(0, 2.94, 0)
+mesh = SubResource("TreeSnowMesh")
+material_override = SubResource("SnowCapMaterial")
+
+[node name="Snowdrift01" type="MeshInstance3D" parent="."]
+position = Vector3(-22, 0.03, -24)
+scale = Vector3(2, 0.23, 1.35)
+mesh = SubResource("SnowDriftMesh")
+material_override = SubResource("SnowDriftMaterial")
+
+[node name="Snowdrift02" type="MeshInstance3D" parent="."]
+position = Vector3(-23, 0.03, 4)
+scale = Vector3(1.5, 0.23, 1.1)
+mesh = SubResource("SnowDriftMesh")
+material_override = SubResource("SnowDriftMaterial")
+
+[node name="Snowdrift03" type="MeshInstance3D" parent="."]
+position = Vector3(-20, 0.03, 27)
+scale = Vector3(2.2, 0.28, 1.8)
+mesh = SubResource("SnowDriftMesh")
+material_override = SubResource("SnowDriftMaterial")
+
+[node name="Snowdrift04" type="MeshInstance3D" parent="."]
+position = Vector3(22, 0.03, -26)
+scale = Vector3(1.8, 0.25, 1.2)
+mesh = SubResource("SnowDriftMesh")
+material_override = SubResource("SnowDriftMaterial")
+
+[node name="Snowdrift05" type="MeshInstance3D" parent="."]
+position = Vector3(22, 0.03, 5)
+scale = Vector3(1.9, 0.2, 1.1)
+mesh = SubResource("SnowDriftMesh")
+material_override = SubResource("SnowDriftMaterial")
+
+[node name="Snowdrift06" type="MeshInstance3D" parent="."]
+position = Vector3(24, 0.03, 26)
+scale = Vector3(1.4, 0.22, 1)
+mesh = SubResource("SnowDriftMesh")
+material_override = SubResource("SnowDriftMaterial")
+
+[node name="Snowdrift07" type="MeshInstance3D" parent="."]
+position = Vector3(-3, 0.03, 26)
+scale = Vector3(2, 0.24, 1.2)
+mesh = SubResource("SnowDriftMesh")
+material_override = SubResource("SnowDriftMaterial")
 
 [node name="HUD" type="CanvasLayer" parent="."]
+
 
 [node name="Instructions" type="Label" parent="HUD"]
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -560.0
-offset_top = 16.0
+offset_left = -550.0
+offset_top = 12.0
 offset_right = -16.0
-offset_bottom = 82.0
+offset_bottom = 84.0
 grow_horizontal = 0
 mouse_filter = 2
-theme_override_colors/font_color = Color(0.95, 0.97, 1, 1)
+theme_override_colors/font_color = Color(0.13, 0.22, 0.26, 1)
 theme_override_font_sizes/font_size = 16
-text = "WinterTD / M0.4 · Winterlandschaft-Test\nWASD/Pfeile: bewegen  |  Q/E/Mausmitte: drehen  |  Rad: Zoom  |  Leertaste: Mitte"
+text = "WinterTD / M0.4.2 · Winterlandschaf-Test\nWASD/Pfeile: bewegen  |  Q/E/Mausmitte: drehen  |  Rad: Zoom  |  Leertaste: Mitte"
 horizontal_alignment = 2
+
