@@ -180,3 +180,37 @@ in the C++ physics step. Godot physics transform interpolation is enabled to
 reduce visible render-step jitter; reset teleport calls
 `reset_physics_interpolation()` to avoid trails. No camera, game economy,
 creep nav or actual combat changes.
+
+## M0.5.2 – Animated root-motion proof of concept
+
+The original Fox `Walk` GLB has **zero net translation per loop**. This branch
+contains a *derived* GLB, `Fox_RootMotion.glb`, with a separate forward root
+translation track authored by WinterTD (1.5 world units per 0.70833-s gait
+cycle); the original source and clips are preserved. This is genuine data in
+the animation clip, though the forward displacement is authored by us rather
+than captured from a different creature.
+
+Godot's manually advanced `AnimationPlayer` reads the new position track via
+`root_motion_track` and passes each resulting fixed-tick delta to C++.
+The C++ fixture uses **only that delta** to move along the existing demonstration
+waypoints. There is no movement speed in the path motor. The ice route remains
+only a temporary path and will not become gameplay pathfinding. Press H for
+25 test HP damage, R to reset, F5 to start. The camera remains unchanged.
+
+**Test:** after closing Godot, in the existing repo:
+
+```bash
+git fetch origin && git switch --track origin/feat/m0-5-2-root-motion && cmake --preset debug && cmake --build --preset debug --parallel 4 && godot --path project --editor
+```
+
+Check the console for `M0.5.2: Root-motion track`, and look for the fox moving
+on the ice. If Godot's GLB importer renames or collapses the motion root node,
+the adapter reports a **clear error rather than silently returning to
+In-Place movement**.
+
+### Root-motion asset verification
+
+Run `python tools/verify_root_motion_glb.py` to confirm that the actual bundled
+GLB contains a 1.5m-per-cycle animated root translation. CI runs this test
+before building C++. The headless Godot test checks that this imported track
+moves the native C++ demo actor rather than relying on a separate speed.

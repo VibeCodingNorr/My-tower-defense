@@ -19,6 +19,8 @@ jobs:
       - name: Setup Ninja (Windows)
         if: runner.os == 'Windows'
         uses: seanmiddleditch/gha-setup-ninja@v5
+      - name: Verify root-motion GLB structure
+        run: python tools/verify_root_motion_glb.py
       - name: Configure
         run: cmake --preset debug
       - name: Build

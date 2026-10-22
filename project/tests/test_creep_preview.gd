@@ -48,17 +48,39 @@ func _verify() -> void:
     for entry in player.get_animation_list():
         clips.append(String(entry))
     var has_walk := false
+    var has_rm := false
     var has_survey := false
     for entry in clips:
         has_walk = has_walk or entry.to_lower().contains("walk")
+        has_rm = has_rm or entry.to_lower().contains("walk_rootmotion")
         has_survey = has_survey or entry.to_lower().contains("survey")
 
-    if not has_walk or not has_survey:
+    if not has_walk or not has_survey or not has_rm:
         _fail("Expected Walk and Survey clips, found: " + str(clips))
         return
 
     if not mover.has_method("get_demo_speed"):
         _fail("Native movement speed accessor is unavailable.")
+        return
+
+    var view_node: Node = mover.get_node("Presentation")
+    if not bool(view_node.get("root_motion_valid")):
+        _fail("AnimationPlayer did not locate an imported root motion track.")
+        return
+
+    if not mover.has_method("apply_demo_root_motion"):
+        _fail("Native root motion callback is missing.")
+        return
+
+    # Walk phase starts after 1.8 seconds. Root motion should move the model
+    # without a fixed-speed C++ path motor.
+    var origin := (mover as Node3D).position
+    await create_timer(2.7).timeout
+    if (mover as Node3D).position.distance_to(origin) < 0.15:
+        _fail("Walking does not advance via sampled root motion.")
+        return
+    if float(view_node.get("root_motion_distance")) < 0.15:
+        _fail("No nonzero root motion accumulated.")
         return
 
     mover.call("apply_demo_hit", 25)
