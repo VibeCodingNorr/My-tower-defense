@@ -44,6 +44,24 @@ The M0.3 perspective is a first tuning pass based on the provided Wintermaul TD
 reference screenshot. M0.2's working C++ extension and interactions remain
 unchanged. No gameplay systems or final graphics are included.
 
+## M0.4.3 – Art-direction pass (visual-only)
+After the second screenshot, the ice/snow colors, repetitive terrain, snowdrift
+discs and cone-like tower markers still looked artificial compared with WC3.
+
+Updated test scene:
+- Snow with more varied cold/warm rock patches and subtle grit
+- Same 9-piece visual path, now painted continuously with less obvious stripes
+- 5 small fantasy watchtower silhouettes (stone bodies, timber trim, colored
+  pitched roofs, tiny crests), **static scenery only**
+- 19 three-layer spruce trees with better silhouettes
+- 10 multi-rock clusters, 20 low shrubs and 10 stone chips
+- 7 conspicuous flat snowdrift discs removed
+- Camera position, controls, zoom and C++ source remain untouched
+
+The look is still an original procedural placeholder, not a Warcraft asset
+replacement. Proper hand-painted assets can be considered after the style is
+approved. There are no creeps, damage, maze placement or gameplay mechanics.
+
 ## M0.4.2 – Winter scene polish (visual-only)
 The M0.4.1 screenshot showed that the ground and overlay planes were
 overexposed and looked like flat strips. The ice path is now drawn directly
