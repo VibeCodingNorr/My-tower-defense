@@ -27,8 +27,9 @@ For CachyOS, install cmake, ninja, git, gcc, python, and Godot.
 - Mouse wheel: smooth zoom
 - Space: return camera target to map center
 
-Expected: 96×96 snowy ground, a 9-segment winding icy test route, 5 static
-round tower pads and 6 low-poly rocks. Camera unchanged from M0.3:
+Expected: 96×96 snowy ground, one decorative winding ice route,
+5 static CC0 Kenney tower models, 19 imported pines and 10 imported rock groups.
+Camera unchanged from M0.3:
 57° downward, yaw 0°, FOV 46°, distance 42 units; zoom spans 16–80 units.
 
 `src/camera/` holds the only active native class. Other subsystems will be
@@ -43,6 +44,22 @@ albedo and the ambient/sun intensity are lowered. The map stays 96×96.
 The M0.3 perspective is a first tuning pass based on the provided Wintermaul TD
 reference screenshot. M0.2's working C++ extension and interactions remain
 unchanged. No gameplay systems or final graphics are included.
+
+## M0.4.4 – Real CC0 3D models (visual-only)
+Screenshot feedback made it clear that primitive towers and cone-like trees
+could not achieve the target visual quality. The scene now includes **12 bundled
+GLB models** selected from Kenney's 3D Tower Defense Kit and Nature Kit:
+- 5 **noninteractive** towers made from Kenney tower models/parts
+- 19 varied pines (snow-covered models and evergreen variants)
+- 10 rock clusters, 3 ice crystals and 2 winter wooden structures
+- The previous hand-built primitive towers, cone trees and rock blocks were
+  removed. Small terrain ground shrubs/chips remain as background details.
+
+The assets are bundled with the repo (Godot imports their GLB scenes) and
+require no additional download step. Licensing/provenance: `docs/ASSET_LICENSES.md`.
+We deliberately import only a handful of CC0 models rather than the whole pack.
+The winding blue route remains a **visual demo**, not a fixed creep route.
+No gameplay or camera code was added or changed.
 
 ## M0.4.3 – Art-direction pass (visual-only)
 After the second screenshot, the ice/snow colors, repetitive terrain, snowdrift
