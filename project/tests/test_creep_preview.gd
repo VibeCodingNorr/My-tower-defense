@@ -57,6 +57,10 @@ func _verify() -> void:
         _fail("Expected Walk and Survey clips, found: " + str(clips))
         return
 
+    if not mover.has_method("get_demo_speed"):
+        _fail("Native movement speed accessor is unavailable.")
+        return
+
     mover.call("apply_demo_hit", 25)
     if int(mover.call("get_demo_health")) != 75:
         _fail("HP did not drop from 100 to 75.")

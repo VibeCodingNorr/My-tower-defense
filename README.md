@@ -168,3 +168,15 @@ Please report whether the fox faces the direction of travel and share errors.
 CI checks both native build variants and (Linux) Godot GLB import. It then runs
 `godot --headless --path project --script res://tests/test_creep_preview.gd`
 to validate the rigged model clips and C++ demo HP/death/reset operations.
+
+### M0.5.1 – Gait/ground-contact correction
+
+Screenshot showed a sliding or floating fox. The GLB Walk clip lasts 0.708s,
+while the original demo moved 4.3 world units/second. Preview speed is now
+**2.1 units/second**, roughly 1.49 units per walk cycle, so paws visually keep
+up. Root height is at terrain height (not 0.18 units above), and a softly
+faded ground-contact shadow helps show contact. Heading turns are smoothed
+in the C++ physics step. Godot physics transform interpolation is enabled to
+reduce visible render-step jitter; reset teleport calls
+`reset_physics_interpolation()` to avoid trails. No camera, game economy,
+creep nav or actual combat changes.

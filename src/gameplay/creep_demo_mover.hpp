@@ -19,6 +19,7 @@ public:
     int get_demo_phase() const;
     int get_demo_health() const;
     double get_demo_health_fraction() const;
+    double get_demo_speed() const;
     double get_demo_phase_seconds() const;
 
 protected:

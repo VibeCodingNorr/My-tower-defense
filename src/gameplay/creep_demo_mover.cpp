@@ -11,13 +11,16 @@ namespace {
 // Author-time visual fixture only. Never consulted by the future maze resolver.
 // These positions happen to overlap the decorative ice route in the prototype.
 const std::array<Vector3, 10> kPreviewWaypoints = {{
-    {-16.0f, 0.18f, -16.0f}, {16.0f, 0.18f, -16.0f},
-    {16.0f, 0.18f, -8.0f}, {-16.0f, 0.18f, -8.0f},
-    {-16.0f, 0.18f, 0.0f}, {16.0f, 0.18f, 0.0f},
-    {16.0f, 0.18f, 8.0f}, {-16.0f, 0.18f, 8.0f},
-    {-16.0f, 0.18f, 16.0f}, {16.0f, 0.18f, 16.0f}
+    {-16.0f, 0.008f, -16.0f}, {16.0f, 0.008f, -16.0f},
+    {16.0f, 0.008f, -8.0f}, {-16.0f, 0.008f, -8.0f},
+    {-16.0f, 0.008f, 0.0f}, {16.0f, 0.008f, 0.0f},
+    {16.0f, 0.008f, 8.0f}, {-16.0f, 0.008f, 8.0f},
+    {-16.0f, 0.008f, 16.0f}, {16.0f, 0.008f, 16.0f}
 }};
-constexpr double kPreviewSpeed = 4.3;
+// Source Walk clip is 0.7083s. 2.1m/s gives ~1.49m per gait cycle.
+// 4.3m/s looked like ice skating because the paws never kept up.
+constexpr double kPreviewSpeed = 2.1;
+constexpr double kTurnRadiansPerSecond = 8.0;
 constexpr double kIdleSeconds = 1.8;
 constexpr double kCollapseSeconds = 2.5;
 }
@@ -28,6 +31,7 @@ void CreepDemoMover::_bind_methods() {
     ClassDB::bind_method(D_METHOD("get_demo_phase"), &CreepDemoMover::get_demo_phase);
     ClassDB::bind_method(D_METHOD("get_demo_health"), &CreepDemoMover::get_demo_health);
     ClassDB::bind_method(D_METHOD("get_demo_health_fraction"), &CreepDemoMover::get_demo_health_fraction);
+    ClassDB::bind_method(D_METHOD("get_demo_speed"), &CreepDemoMover::get_demo_speed);
     ClassDB::bind_method(D_METHOD("get_demo_phase_seconds"), &CreepDemoMover::get_demo_phase_seconds);
 }
 
@@ -44,6 +48,8 @@ void CreepDemoMover::reset_demo() {
     set_position(kPreviewWaypoints.front());
     const Vector3 forward = kPreviewWaypoints[1] - kPreviewWaypoints[0];
     set_rotation(Vector3(0.0f, std::atan2(-forward.x, -forward.z), 0.0f));
+    // Avoid streaking when the demo repositions the fox after a collapse.
+    reset_physics_interpolation();
 }
 
 void CreepDemoMover::enter_dying() {
@@ -70,6 +76,10 @@ int CreepDemoMover::get_demo_health() const {
     return health_;
 }
 
+double CreepDemoMover::get_demo_speed() const {
+    return phase_ == Phase::Moving ? kPreviewSpeed : 0.0;
+}
+
 double CreepDemoMover::get_demo_health_fraction() const {
     return static_cast<double>(health_) / 100.0;
 }
@@ -90,7 +100,14 @@ void CreepDemoMover::advance_along_fixture(double delta) {
             continue;
         }
         const Vector3 direction = offset / distance;
-        set_rotation(Vector3(0.0f, std::atan2(-direction.x, -direction.z), 0.0f));
+        // Rotate into turns smoothly instead of instantly snapping 90 degrees.
+        const double old_yaw = get_rotation().y;
+        const double target_yaw = std::atan2(-direction.x, -direction.z);
+        const double error = std::atan2(std::sin(target_yaw - old_yaw),
+                                        std::cos(target_yaw - old_yaw));
+        const double max_turn = kTurnRadiansPerSecond * delta;
+        const double yaw = old_yaw + std::clamp(error, -max_turn, max_turn);
+        set_rotation(Vector3(0.0f, yaw, 0.0f));
         const double move = std::min(remaining, distance);
         set_position(get_position() + direction * move);
         remaining -= move;

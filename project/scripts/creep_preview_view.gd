@@ -47,6 +47,13 @@ func _update_view() -> void:
         elif player != null:
             player.stop()
 
+    if phase == 1 and player != null:
+        # Match the true imported gait cycle to the C++ movement speed.
+        # Source Walk duration 0.708s; 2.1m traveled per second at 1x.
+        player.speed_scale = clampf(float(mover.call("get_demo_speed")) / 2.1, 0.6, 1.6)
+    elif player != null:
+        player.speed_scale = 1.0
+
     if phase == 2:
         # Explicit temporary visual collapse, NOT an imported death animation.
         var t: float = clampf(float(mover.call("get_demo_phase_seconds")) / 0.85, 0.0, 1.0)
