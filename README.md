@@ -45,6 +45,20 @@ The M0.3 perspective is a first tuning pass based on the provided Wintermaul TD
 reference screenshot. M0.2's working C++ extension and interactions remain
 unchanged. No gameplay systems or final graphics are included.
 
+## M0.4.5 – WC3-style palette + tree silhouette pass
+After the third visual screenshot, Kenney's original magenta stone looked
+out of place next to the ice and snow. A **visual-only GDScript** on the main
+scene now applies `winter_tower_palette.gdshader` only to imported
+BuildPad tower meshes. The shader preserves original Kenney UV/color-map
+details and remaps pronounced purple pixels into weathered grey stone.
+The 19 static roadside trees are now a mixed forest of **15** larger evergreen
+pines and **4** snow-covered conifers rather than mostly white cones.
+A dark translucent background keeps the camera test instructions readable.
+
+This is scene styling, not C++ gameplay; the C++ camera is untouched,
+and **no future Maze-building path is encoded by the decorative ice markings**.
+A working local Godot F5 check of the new material is required before approval.
+
 ## M0.4.4 – Real CC0 3D models (visual-only)
 Screenshot feedback made it clear that primitive towers and cone-like trees
 could not achieve the target visual quality. The scene now includes **12 bundled
