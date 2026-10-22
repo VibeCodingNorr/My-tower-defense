@@ -1,0 +1,59 @@
+[gd_scene load_steps=9 format=3]
+
+[ext_resource type="PackedScene" path="res://assets/creeps/fox/Fox.glb" id="1_fox"]
+[ext_resource type="Script" path="res://scripts/creep_preview_view.gd" id="2_view"]
+[ext_resource type="Shader" path="res://shaders/creep_contact_shadow.gdshader" id="3_shadow"]
+
+[sub_resource type="PlaneMesh" id="ContactPlane"]
+size = Vector2(2.25, 0.95)
+
+[sub_resource type="ShaderMaterial" id="ContactShadowMaterial"]
+shader = ExtResource("3_shadow")
+
+[sub_resource type="BoxMesh" id="HealthBarMesh"]
+size = Vector3(1.7, 0.18, 0.035)
+
+[sub_resource type="StandardMaterial3D" id="HealthBackgroundMaterial"]
+shading_mode = 0
+albedo_color = Color(0.12, 0.14, 0.17, 1)
+no_depth_test = true
+
+[sub_resource type="StandardMaterial3D" id="HealthFillMaterial"]
+shading_mode = 0
+albedo_color = Color(0.25, 0.74, 0.37, 1)
+no_depth_test = true
+
+[node name="PreviewCreep" type="CreepDemoMover"]
+
+[node name="ContactShadow" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.014, 0)
+cast_shadow = 0
+mesh = SubResource("ContactPlane")
+material_override = SubResource("ContactShadowMaterial")
+
+[node name="Presentation" type="Node3D" parent="."]
+script = ExtResource("2_view")
+
+[node name="FoxModel" parent="Presentation" instance=ExtResource("1_fox")]
+position = Vector3(0, -0.006, 0)
+scale = Vector3(0.0185, 0.0185, 0.0185)
+
+[node name="HealthRoot" type="Node3D" parent="Presentation"]
+position = Vector3(0, 1.9, 0)
+
+[node name="Background" type="MeshInstance3D" parent="Presentation/HealthRoot"]
+mesh = SubResource("HealthBarMesh")
+material_override = SubResource("HealthBackgroundMaterial")
+
+[node name="Fill" type="MeshInstance3D" parent="Presentation/HealthRoot"]
+position = Vector3(0, 0, 0.025)
+mesh = SubResource("HealthBarMesh")
+material_override = SubResource("HealthFillMaterial")
+
+[node name="Name" type="Label3D" parent="Presentation/HealthRoot"]
+position = Vector3(0, 0.38, 0)
+pixel_size = 0.006
+font_size = 28
+text = "Frostfuchs · TEST"
+modulate = Color(0.92, 0.97, 1, 1)
+outline_size = 4

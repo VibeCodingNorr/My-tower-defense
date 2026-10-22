@@ -1,8 +1,9 @@
-[gd_scene load_steps=25 format=3]
+[gd_scene load_steps=26 format=3]
 
 [ext_resource type="Shader" path="res://shaders/snow_ground.gdshader" id="1_snow"]
 [ext_resource type="GDExtension" path="res://bin/wintertd.gdextension" id="2_extension"]
 [ext_resource type="Script" path="res://scripts/winter_preview_style.gd" id="3_style"]
+[ext_resource type="PackedScene" path="res://scenes/preview_creep.tscn" id="4_creep"]
 [ext_resource type="PackedScene" path="res://assets/kenney/tower-defense-kit/snow-detail-tree-large.glb" id="kenney_1"]
 [ext_resource type="PackedScene" path="res://assets/kenney/tower-defense-kit/snow-detail-tree.glb" id="kenney_2"]
 [ext_resource type="PackedScene" path="res://assets/kenney/nature-kit/tree-pinedefaulta.glb" id="kenney_3"]
@@ -660,6 +661,8 @@ position = Vector3(5, 0, 21)
 scale = Vector3(2.30, 2.30, 2.30)
 rotation_degrees = Vector3(0, 295, 0)
 
+[node name="AnimatedCreepPreview" parent="." instance=ExtResource("4_creep")]
+
 [node name="HUD" type="CanvasLayer" parent="."]
 
 
@@ -687,6 +690,6 @@ grow_horizontal = 0
 mouse_filter = 2
 theme_override_colors/font_color = Color(0.93, 0.95, 0.96, 1)
 theme_override_font_sizes/font_size = 16
-text = "WinterTD / M0.4.6 · Winterlandschaf-Test\nWASD/Pfeile: bewegen  |  Q/E/Mausmitte: drehen  |  Rad: Zoom  |  Leertaste: Mitte"
+text = "WinterTD / M0.5 · 3D-Creep mit Animation\nWASD: Kamera  |  Q/E: drehen  |  Rad: Zoom  |  H: -25 HP  |  R: Neustart"
 horizontal_alignment = 2
 
