@@ -519,6 +519,147 @@ scale = Vector3(4.4,4.4,4.4)
 rotation_degrees = Vector3(0,97,0)
 
 
+
+[node name="ForestEdge01" parent="." instance=ExtResource("kenney_1")]
+position = Vector3(-22, 0, -20)
+scale = Vector3(3.700, 3.700, 3.700)
+rotation_degrees = Vector3(0, 0, 0)
+
+[node name="ForestEdge02" parent="." instance=ExtResource("kenney_3")]
+position = Vector3(-23.5, 0, -14)
+scale = Vector3(2.300, 2.300, 2.300)
+rotation_degrees = Vector3(0, 47, 0)
+
+[node name="ForestEdge03" parent="." instance=ExtResource("kenney_4")]
+position = Vector3(-22, 0, -7)
+scale = Vector3(2.180, 2.180, 2.180)
+rotation_degrees = Vector3(0, 94, 0)
+
+[node name="ForestEdge04" parent="." instance=ExtResource("kenney_3")]
+position = Vector3(-23, 0, -1)
+scale = Vector3(2.550, 2.550, 2.550)
+rotation_degrees = Vector3(0, 141, 0)
+
+[node name="ForestEdge05" parent="." instance=ExtResource("kenney_4")]
+position = Vector3(-22.5, 0, 5)
+scale = Vector3(2.100, 2.100, 2.100)
+rotation_degrees = Vector3(0, 188, 0)
+
+[node name="ForestEdge06" parent="." instance=ExtResource("kenney_3")]
+position = Vector3(-23.6, 0, 11)
+scale = Vector3(2.420, 2.420, 2.420)
+rotation_degrees = Vector3(0, 235, 0)
+
+[node name="ForestEdge07" parent="." instance=ExtResource("kenney_3")]
+position = Vector3(-22.4, 0, 18)
+scale = Vector3(2.250, 2.250, 2.250)
+rotation_degrees = Vector3(0, 282, 0)
+
+[node name="ForestEdge08" parent="." instance=ExtResource("kenney_4")]
+position = Vector3(22, 0, -20)
+scale = Vector3(2.350, 2.350, 2.350)
+rotation_degrees = Vector3(0, 329, 0)
+
+[node name="ForestEdge09" parent="." instance=ExtResource("kenney_3")]
+position = Vector3(23.8, 0, -13)
+scale = Vector3(2.280, 2.280, 2.280)
+rotation_degrees = Vector3(0, 16, 0)
+
+[node name="ForestEdge10" parent="." instance=ExtResource("kenney_3")]
+position = Vector3(22.1, 0, -6)
+scale = Vector3(2.220, 2.220, 2.220)
+rotation_degrees = Vector3(0, 63, 0)
+
+[node name="ForestEdge11" parent="." instance=ExtResource("kenney_4")]
+position = Vector3(23, 0, 1)
+scale = Vector3(2.480, 2.480, 2.480)
+rotation_degrees = Vector3(0, 110, 0)
+
+[node name="ForestEdge12" parent="." instance=ExtResource("kenney_3")]
+position = Vector3(22.6, 0, 9)
+scale = Vector3(2.200, 2.200, 2.200)
+rotation_degrees = Vector3(0, 157, 0)
+
+[node name="ForestEdge13" parent="." instance=ExtResource("kenney_3")]
+position = Vector3(23.7, 0, 16)
+scale = Vector3(2.340, 2.340, 2.340)
+rotation_degrees = Vector3(0, 204, 0)
+
+[node name="ForestEdge14" parent="." instance=ExtResource("kenney_1")]
+position = Vector3(22.4, 0, 21)
+scale = Vector3(3.660, 3.660, 3.660)
+rotation_degrees = Vector3(0, 251, 0)
+
+[node name="ForestEdge15" parent="." instance=ExtResource("kenney_3")]
+position = Vector3(-10, 0, -23)
+scale = Vector3(1.720, 1.720, 1.720)
+rotation_degrees = Vector3(0, 298, 0)
+
+[node name="ForestEdge16" parent="." instance=ExtResource("kenney_4")]
+position = Vector3(1, 0, -23.5)
+scale = Vector3(1.880, 1.880, 1.880)
+rotation_degrees = Vector3(0, 345, 0)
+
+[node name="ForestEdge17" parent="." instance=ExtResource("kenney_3")]
+position = Vector3(11, 0, -22)
+scale = Vector3(1.720, 1.720, 1.720)
+rotation_degrees = Vector3(0, 32, 0)
+
+[node name="ForestEdge18" parent="." instance=ExtResource("kenney_3")]
+position = Vector3(-9, 0, 23)
+scale = Vector3(1.860, 1.860, 1.860)
+rotation_degrees = Vector3(0, 79, 0)
+
+[node name="ForestEdge19" parent="." instance=ExtResource("kenney_4")]
+position = Vector3(3, 0, 22.5)
+scale = Vector3(1.780, 1.780, 1.780)
+rotation_degrees = Vector3(0, 126, 0)
+
+[node name="ForestEdge20" parent="." instance=ExtResource("kenney_3")]
+position = Vector3(12, 0, 22)
+scale = Vector3(1.670, 1.670, 1.670)
+rotation_degrees = Vector3(0, 173, 0)
+
+[node name="ForestRock01" parent="." instance=ExtResource("kenney_5")]
+position = Vector3(-20, 0, -17)
+scale = Vector3(2.00, 2.00, 2.00)
+rotation_degrees = Vector3(0, 18, 0)
+
+[node name="ForestRock02" parent="." instance=ExtResource("kenney_5")]
+position = Vector3(20, 0, -16)
+scale = Vector3(2.30, 2.30, 2.30)
+rotation_degrees = Vector3(0, 109, 0)
+
+[node name="ForestRock03" parent="." instance=ExtResource("kenney_5")]
+position = Vector3(-20, 0, -3)
+scale = Vector3(2.60, 2.60, 2.60)
+rotation_degrees = Vector3(0, 200, 0)
+
+[node name="ForestRock04" parent="." instance=ExtResource("kenney_5")]
+position = Vector3(20, 0, 5)
+scale = Vector3(2.00, 2.00, 2.00)
+rotation_degrees = Vector3(0, 291, 0)
+
+[node name="ForestRock05" parent="." instance=ExtResource("kenney_5")]
+position = Vector3(-20, 0, 13)
+scale = Vector3(2.30, 2.30, 2.30)
+rotation_degrees = Vector3(0, 22, 0)
+
+[node name="ForestRock06" parent="." instance=ExtResource("kenney_5")]
+position = Vector3(20, 0, 17)
+scale = Vector3(2.60, 2.60, 2.60)
+rotation_degrees = Vector3(0, 113, 0)
+
+[node name="ForestRock07" parent="." instance=ExtResource("kenney_5")]
+position = Vector3(-2, 0, -21)
+scale = Vector3(2.00, 2.00, 2.00)
+rotation_degrees = Vector3(0, 204, 0)
+
+[node name="ForestRock08" parent="." instance=ExtResource("kenney_5")]
+position = Vector3(5, 0, 21)
+scale = Vector3(2.30, 2.30, 2.30)
+rotation_degrees = Vector3(0, 295, 0)
+
 [node name="HUD" type="CanvasLayer" parent="."]
 
 
@@ -546,6 +687,6 @@ grow_horizontal = 0
 mouse_filter = 2
 theme_override_colors/font_color = Color(0.93, 0.95, 0.96, 1)
 theme_override_font_sizes/font_size = 16
-text = "WinterTD / M0.4.5 · Winter-Farbpalette\nWASD/Pfeile: bewegen  |  Q/E/Mausmitte: drehen  |  Rad: Zoom  |  Leertaste: Mitte"
+text = "WinterTD / M0.4.6 · Winterlandschaf-Test\nWASD/Pfeile: bewegen  |  Q/E/Mausmitte: drehen  |  Rad: Zoom  |  Leertaste: Mitte"
 horizontal_alignment = 2
 
