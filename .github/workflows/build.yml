@@ -39,6 +39,7 @@ jobs:
           GODOT=/tmp/wintertd-godot/Godot_v4.7.2-stable_linux.x86_64
           "$GODOT" --headless --path project --editor --import --quit
           "$GODOT" --headless --path project --quit-after 5
+          "$GODOT" --headless --path project --script res://tests/test_creep_preview.gd
       - name: Upload extension
         uses: actions/upload-artifact@v4
         with:

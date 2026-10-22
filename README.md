@@ -162,3 +162,9 @@ git fetch origin && git switch --track origin/feat/m0-5-animated-creep && cmake 
 Press F5. Expect idle for ~1.8s, real limb animation while walking along the
 ice, camera-facing HP bar, H and R interactions, and a temporary fall/reset.
 Please report whether the fox faces the direction of travel and share errors.
+
+### Automated smoke test
+
+CI checks both native build variants and (Linux) Godot GLB import. It then runs
+`godot --headless --path project --script res://tests/test_creep_preview.gd`
+to validate the rigged model clips and C++ demo HP/death/reset operations.
