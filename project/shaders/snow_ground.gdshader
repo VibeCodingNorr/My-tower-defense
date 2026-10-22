@@ -1,17 +1,17 @@
 shader_type spatial;
 render_mode cull_back, depth_draw_opaque, diffuse_burley, specular_schlick_ggx;
 
-// M0.4.2: a single surface blends snow, ice and frosted edges.
-// The serpentine route is decorative and does not define creep navigation.
-// All distances below are in world units (camera-independent).
-uniform vec4 snow_light : source_color = vec4(0.56, 0.63, 0.65, 1.0);
-uniform vec4 snow_shadow : source_color = vec4(0.39, 0.49, 0.54, 1.0);
-uniform vec4 ice_deep : source_color = vec4(0.23, 0.40, 0.49, 1.0);
-uniform vec4 ice_light : source_color = vec4(0.35, 0.54, 0.61, 1.0);
-uniform vec4 ice_rim : source_color = vec4(0.67, 0.72, 0.72, 1.0);
+// M0.4.3 — Painterly winter terrain. Entire decorative path blends into snow.
+// No collision, routing, navigation or game logic.
+uniform vec4 snow_light : source_color = vec4(0.65, 0.70, 0.69, 1.0);
+uniform vec4 snow_shadow : source_color = vec4(0.38, 0.46, 0.46, 1.0);
+uniform vec4 ice_deep : source_color = vec4(0.20, 0.36, 0.45, 1.0);
+uniform vec4 ice_light : source_color = vec4(0.37, 0.54, 0.60, 1.0);
+uniform vec4 ice_rim : source_color = vec4(0.65, 0.72, 0.72, 1.0);
+uniform vec4 stony_ground : source_color = vec4(0.26, 0.34, 0.33, 1.0);
 uniform float path_half_width = 2.05;
-uniform float path_edge_softness = 0.48;
-uniform float ground_grid_opacity : hint_range(0.0, 0.25) = 0.045;
+uniform float path_edge_softness = 0.50;
+uniform float ground_grid_opacity : hint_range(0.0, 0.25) = 0.034;
 
 varying vec2 ground_xz;
 
@@ -36,13 +36,18 @@ float noise21(vec2 p) {
     );
 }
 
+float fbm(vec2 p) {
+    return noise21(p) * 0.54 +
+        noise21(p * 2.13 + 12.5) * 0.29 +
+        noise21(p * 4.37 - 16.3) * 0.17;
+}
+
 float distance_segment(vec2 p, vec2 a, vec2 b) {
     vec2 v = b - a;
-    float t = clamp(dot(p - a, v) / dot(v, v), 0.0, 1.0);
+    float t = clamp(dot(p - a, v) / max(dot(v, v), 0.0001), 0.0, 1.0);
     return length(p - (a + t * v));
 }
 
-// One continuous route rather than nine overlaid, square-ended rectangles.
 float route_distance(vec2 p) {
     float d = distance_segment(p, vec2(-16.0, -16.0), vec2(16.0, -16.0));
     d = min(d, distance_segment(p, vec2(16.0, -16.0), vec2(16.0, -8.0)));
@@ -56,43 +61,62 @@ float route_distance(vec2 p) {
     return d;
 }
 
+float build_spots(vec2 p) {
+    float d = length(p - vec2(-8.0, -12.0));
+    d = min(d, length(p - vec2(8.0, -4.0)));
+    d = min(d, length(p - vec2(-3.0, 4.0)));
+    d = min(d, length(p - vec2(-8.0, 12.0)));
+    d = min(d, length(p - vec2(8.0, -12.0)));
+    return d;
+}
+
 void fragment() {
     vec2 p = ground_xz;
-    float coarse = noise21(p * 0.11);
-    float speckle = noise21(p * 1.8);
-    float ridge = noise21(p * 0.42);
+    float macro = fbm(p * 0.10);
+    float medium = fbm(p * 0.41);
+    float grains = noise21(p * 2.55);
 
-    // Gentle, cool snow variations rather than overexposed white.
-    vec3 snow = mix(snow_shadow.rgb, snow_light.rgb, 0.40 + 0.45 * coarse);
-    snow += (speckle - 0.5) * 0.040;
+    // Break up the uniform blue snow with warmer rock/gravel pockets.
+    vec3 snow = mix(snow_shadow.rgb, snow_light.rgb, clamp(macro * 0.63 + medium * 0.29, 0.0, 1.0));
+    snow += (grains - 0.5) * 0.035;
+    float gravel = smoothstep(0.64, 0.77, medium + (grains - 0.5) * 0.10);
+    snow = mix(snow, stony_ground.rgb, gravel * 0.50);
 
-    // A faint one-unit placement guide, visible only on the snowy surfaces.
+    // A darker, rugged substrate around static tower scale-reference props.
+    float pad_dist = build_spots(p);
+    float patch_edge = 2.40 + (medium - 0.5) * 0.8;
+    float stone_patch = 1.0 - smoothstep(patch_edge - 0.45, patch_edge + 0.65, pad_dist);
+    snow = mix(snow, stony_ground.rgb * (0.87 + 0.20 * medium), stone_patch * 0.68);
+
+    // Almost invisible building grid — retained for visual proportions.
     vec2 cell = abs(fract(p - 0.5) - 0.5) / max(fwidth(p), vec2(0.001));
     float grid_line = 1.0 - clamp(min(cell.x, cell.y), 0.0, 1.0);
     snow = mix(snow, snow_shadow.rgb, grid_line * ground_grid_opacity);
 
     float d = route_distance(p);
-    float boundary = path_half_width + (coarse - 0.5) * 0.28 + (ridge - 0.5) * 0.22;
+    float edge_noise = (fbm(p * 0.68) - 0.5) * 0.78;
+    float boundary = path_half_width + edge_noise;
     float ice_mask = 1.0 - smoothstep(
         boundary - path_edge_softness,
         boundary + path_edge_softness,
         d
     );
 
-    // Mottled frozen water; no repeated bright striping.
-    float crack = noise21(p * 1.20 + vec2(ridge, coarse));
-    float vein = abs(sin(p.x * 1.12 + p.y * 0.83 + coarse * 6.0));
-    float frost = smoothstep(0.78, 0.97, vein) * (0.14 + 0.18 * crack);
-    vec3 ice = mix(ice_deep.rgb, ice_light.rgb, 0.28 + 0.38 * crack);
-    ice += vec3(0.08, 0.11, 0.11) * frost;
+    // Subtle fractured ice instead of repeated bright diagonal stripes.
+    float cracks = fbm(p * 0.83 + vec2(medium * 2.3, macro * 1.6));
+    float thin_vein = abs(sin(p.x * 0.79 + p.y * 0.36 + macro * 5.0));
+    float vein = smoothstep(0.965, 0.994, thin_vein) * (0.18 + 0.24 * cracks);
+    vec3 ice = mix(ice_deep.rgb, ice_light.rgb, clamp(0.22 + cracks * 0.52, 0.0, 1.0));
+    ice += vec3(0.10, 0.14, 0.14) * vein;
 
-    // Frosted snowbank ring helps the player read every lane edge.
-    float bank = smoothstep(boundary - 0.70, boundary - 0.12, d)
-        * (1.0 - smoothstep(boundary + 0.12, boundary + 0.85, d));
+    // Snow-lipped banks deliberately imperfect rather than uniform neon lines.
+    float bank = smoothstep(boundary - 0.68, boundary - 0.14, d) *
+        (1.0 - smoothstep(boundary + 0.04, boundary + 0.73, d));
+    float bank_shade = 0.34 + 0.24 * medium;
     vec3 blended = mix(snow, ice, ice_mask);
-    blended = mix(blended, ice_rim.rgb, bank * 0.48);
+    blended = mix(blended, ice_rim.rgb, bank * bank_shade);
 
     ALBEDO = clamp(blended, vec3(0.0), vec3(1.0));
-    ROUGHNESS = mix(0.91, 0.49, ice_mask);
-    SPECULAR = mix(0.10, 0.29, ice_mask);
+    ROUGHNESS = mix(0.91, 0.53, ice_mask);
+    SPECULAR = mix(0.12, 0.28, ice_mask);
 }
