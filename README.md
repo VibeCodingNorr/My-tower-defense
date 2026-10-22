@@ -1,7 +1,7 @@
-# WinterTD 3D — M0.3 (stacked on M0.2)
+# WinterTD 3D — M0.4 (stacked on M0.3)
 
 Godot 4.7.2 + C++20 via GDExtension. This milestone contains a native RTS camera,
-a placeholder grid/terrain, environment lighting, and build infrastructure.
+procedural snow and ice-lane shaders, static environment props, and build infrastructure.
 There are **no gameplay systems** yet.
 
 ## Requirements
@@ -27,9 +27,9 @@ For CachyOS, install cmake, ninja, git, gcc, python, and Godot.
 - Mouse wheel: smooth zoom
 - Space: return camera target to map center
 
-Expected: 96×96 placeholder ground grid, three smaller cubes, soft ambient
-light and directional light. Start angle 57° downward, yaw 0°, FOV 46°,
-distance 42 units. Zoom spans 16–80 units.
+Expected: 96×96 snowy ground, a 9-segment winding icy test route, 5 static
+round tower pads and 6 low-poly rocks. Camera unchanged from M0.3:
+57° downward, yaw 0°, FOV 46°, distance 42 units; zoom spans 16–80 units.
 
 `src/camera/` holds the only active native class. Other subsystems will be
 added in later milestones. The renderer and camera are not part of gameplay
@@ -43,6 +43,13 @@ albedo and the ambient/sun intensity are lowered. The map stays 96×96.
 The M0.3 perspective is a first tuning pass based on the provided Wintermaul TD
 reference screenshot. M0.2's working C++ extension and interactions remain
 unchanged. No gameplay systems or final graphics are included.
+
+## M0.4 scene-only test
+The nine ice meshes are visual markers, **not** navigation geometry or a fixed
+creep route. Building pads and rocks are also noninteractive placeholders.
+The M0.3 camera source code and binaries are unchanged; a rebuild is optional
+if you already built the GDExtension. Check ice/snow contrast and prop scale
+in a Godot F5 run before approving the look.
 
 ## Verification
 The GitHub workflow builds on Linux and Windows. A successful native build and
