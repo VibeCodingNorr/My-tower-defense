@@ -1,4 +1,4 @@
-# WinterTD 3D — M0.2
+# WinterTD 3D — M0.3 (stacked on M0.2)
 
 Godot 4.7.2 + C++20 via GDExtension. This milestone contains a native RTS camera,
 a placeholder grid/terrain, environment lighting, and build infrastructure.
@@ -27,12 +27,18 @@ For CachyOS, install cmake, ninja, git, gcc, python, and Godot.
 - Mouse wheel: smooth zoom
 - Space: return camera target to map center
 
-Expected: 48×48 placeholder ground grid, three cubes, simple sky and
-directional light, camera pitched at 52 degrees.
+Expected: 96×96 placeholder ground grid, three smaller cubes, soft ambient
+light and directional light. Start angle 62° downward, yaw 0°, FOV 46°,
+distance 42 units. Zoom spans 16–80 units.
 
 `src/camera/` holds the only active native class. Other subsystems will be
 added in later milestones. The renderer and camera are not part of gameplay
 simulation. No Warcraft III proprietary assets or code are included.
+
+## WC3 camera framing
+The M0.3 perspective is a first tuning pass based on the provided Wintermaul TD
+reference screenshot. M0.2's working C++ extension and interactions remain
+unchanged. No gameplay systems or final graphics are included.
 
 ## Verification
 The GitHub workflow builds on Linux and Windows. A successful native build and
