@@ -6,7 +6,7 @@
 #include <godot_cpp/classes/input_event_mouse_button.hpp>
 #include <godot_cpp/classes/input_event_mouse_motion.hpp>
 #include <godot_cpp/core/memory.hpp>
-#include <godot_cpp/variant/global_constants.hpp>
+#include <godot_cpp/classes/global_constants.hpp>
 
 using namespace godot;
 
