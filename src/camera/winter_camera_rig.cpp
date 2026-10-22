@@ -16,13 +16,13 @@ void WinterCameraRig::_ready() {
     pitch_pivot_ = memnew(Node3D);
     pitch_pivot_->set_name("PitchPivot");
     add_child(pitch_pivot_);
-    pitch_pivot_->set_rotation_degrees(Vector3(-52.0, 0.0, 0.0));
+    pitch_pivot_->set_rotation_degrees(Vector3(-62.0, 0.0, 0.0));
 
     camera_ = memnew(Camera3D);
     camera_->set_name("RTSCamera");
     pitch_pivot_->add_child(camera_);
     camera_->set_position(Vector3(0.0, 0.0, current_distance_));
-    camera_->set_fov(52.0);
+    camera_->set_fov(46.0);
     camera_->set_near(0.1);
     camera_->set_far(250.0);
     camera_->make_current();
@@ -50,7 +50,7 @@ void WinterCameraRig::_process(double delta) {
 
     // Node3D is yaw-only, so translating locally stays parallel to the ground.
     if (movement.length_squared() > 0.0) {
-        const double speed = 13.0 * (current_distance_ / 26.0);
+        const double speed = 17.0 * (current_distance_ / 42.0);
         translate_object_local(movement.normalized() * speed * delta);
     }
 
@@ -76,9 +76,9 @@ void WinterCameraRig::_unhandled_input(const Ref<InputEvent> &event) {
     if (const auto *button = Object::cast_to<InputEventMouseButton>(event.ptr())) {
         if (button->is_pressed()) {
             if (button->get_button_index() == MOUSE_BUTTON_WHEEL_UP) {
-                target_distance_ = std::max(10.0, target_distance_ - 2.0);
+                target_distance_ = std::max(16.0, target_distance_ - 3.0);
             } else if (button->get_button_index() == MOUSE_BUTTON_WHEEL_DOWN) {
-                target_distance_ = std::min(48.0, target_distance_ + 2.0);
+                target_distance_ = std::min(80.0, target_distance_ + 3.0);
             }
         }
     }
