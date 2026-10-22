@@ -44,12 +44,27 @@ The M0.3 perspective is a first tuning pass based on the provided Wintermaul TD
 reference screenshot. M0.2's working C++ extension and interactions remain
 unchanged. No gameplay systems or final graphics are included.
 
-## M0.4 scene-only test
-The nine ice meshes are visual markers, **not** navigation geometry or a fixed
-creep route. Building pads and rocks are also noninteractive placeholders.
-The M0.3 camera source code and binaries are unchanged; a rebuild is optional
-if you already built the GDExtension. Check ice/snow contrast and prop scale
-in a Godot F5 run before approving the look.
+## M0.4.2 – Winter scene polish (visual-only)
+The M0.4.1 screenshot showed that the ground and overlay planes were
+overexposed and looked like flat strips. The ice path is now drawn directly
+into the **same ground shader** as the snow: continuous rounded connections,
+frosted banks, no geometric seam, muted colors and subtle 1m grid.
+The route shown is a visual comparison example, **not a gameplay route**.
+
+Static size references: **5** stone plinths with small beacons;
+**10** faceted rocks with snow caps, **19** low-poly spruces, **7** snowdrifts.
+The settled M0.3 C++ camera is not touched. There are no creeps, dynamic
+pathfinding, build commands or gameplay systems.
+
+For CachyOS, after closing Godot and switching to this branch:
+```sh
+git pull --ff-only
+cmake --build --preset debug --parallel 4
+godot --path project --editor
+```
+Press F5 and compare winter mood, route outlines and tower scale.
+The Linux CI additionally performs a headless Godot scene import/runtime
+smoke test on Godot 4.7.2, after building the native extension.
 
 ## Verification
 The GitHub workflow builds on Linux and Windows. A successful native build and
