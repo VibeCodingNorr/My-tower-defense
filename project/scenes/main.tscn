@@ -1,0 +1,79 @@
+[gd_scene load_steps=10 format=3]
+
+[ext_resource type="Shader" path="res://shaders/ground_grid.gdshader" id="1_grid"]
+[ext_resource type="GDExtension" path="res://bin/wintertd.gdextension" id="2_ext"]
+
+[sub_resource type="ShaderMaterial" id="GridMaterial"]
+shader = ExtResource("1_grid")
+
+[sub_resource type="PlaneMesh" id="GroundMesh"]
+material = SubResource("GridMaterial")
+size = Vector2(48, 48)
+
+[sub_resource type="BoxMesh" id="LandmarkMesh"]
+size = Vector3(2, 2, 2)
+
+[sub_resource type="StandardMaterial3D" id="LandmarkMat"]
+albedo_color = Color(0.62, 0.57, 0.48, 1)
+roughness = 0.86
+
+[sub_resource type="ProceduralSkyMaterial" id="SkyMaterial"]
+sky_top_color = Color(0.30, 0.42, 0.55, 1)
+sky_horizon_color = Color(0.71, 0.79, 0.82, 1)
+ground_bottom_color = Color(0.16, 0.25, 0.25, 1)
+
+[sub_resource type="Sky" id="Sky"]
+sky_material = SubResource("SkyMaterial")
+
+[sub_resource type="Environment" id="Environment"]
+background_mode = 2
+sky = SubResource("Sky")
+ambient_light_source = 2
+reflected_light_source = 2
+
+[node name="WinterTD" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment")
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+rotation_degrees = Vector3(-56, -34, 0)
+light_energy = 1.15
+shadow_enabled = true
+
+[node name="Ground" type="MeshInstance3D" parent="."]
+mesh = SubResource("GroundMesh")
+
+[node name="CameraRig" type="WinterCameraRig" parent="."]
+
+[node name="LandmarkNorth" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 1, -5)
+material_override = SubResource("LandmarkMat")
+mesh = SubResource("LandmarkMesh")
+
+[node name="LandmarkWest" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 1, 2)
+material_override = SubResource("LandmarkMat")
+mesh = SubResource("LandmarkMesh")
+
+[node name="LandmarkSouth" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 1, 7)
+material_override = SubResource("LandmarkMat")
+mesh = SubResource("LandmarkMesh")
+
+[node name="HUD" type="CanvasLayer" parent="."]
+
+[node name="Instructions" type="Label" parent="HUD"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -520.0
+offset_top = 16.0
+offset_right = -16.0
+offset_bottom = 78.0
+grow_horizontal = 0
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.94, 0.96, 1, 1)
+theme_override_font_sizes/font_size = 16
+text = "WinterTD / M0.2 · Kamera-Prototyp\nWASD/Pfeile: bewegen  |  Q/E/Mausmitte: drehen  |  Rad: Zoom  |  Leertaste: Mitte"
+horizontal_alignment = 2
