@@ -19,8 +19,8 @@ protected:
 private:
     Node3D *pitch_pivot_ = nullptr;
     Camera3D *camera_ = nullptr;
-    double yaw_degrees_ = 45.0;
-    double target_distance_ = 26.0;
-    double current_distance_ = 26.0;
+    double yaw_degrees_ = 0.0;
+    double target_distance_ = 42.0;
+    double current_distance_ = 42.0;
 };
 } // namespace godot
