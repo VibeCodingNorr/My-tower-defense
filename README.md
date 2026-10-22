@@ -45,6 +45,20 @@ The M0.3 perspective is a first tuning pass based on the provided Wintermaul TD
 reference screenshot. M0.2's working C++ extension and interactions remain
 unchanged. No gameplay systems or final graphics are included.
 
+## M0.4.6 – Low-contrast tower masonry and pathside tree line
+The M0.4.5 screenshot showed that the towers were now mostly white and that
+almost all trees sat offscreen at the far edge. This limited art-only pass:
+- Caps tower material brightness and recolors purple accents to muted brown-gray
+  stone, preserving the texture atlas details.
+- Adds 20 staggered pine/snow-tree instances and 8 snow rock groups beside the
+  decorative route and at the top/bottom edges.
+- Leaves the 5 static test towers, maze-shaped ice visual, C++ camera,
+  zoom and input controls completely unchanged.
+
+No dynamic maze navigation, tower building, creep movement or combat yet.
+The imported models stay under Kenney's CC0 license, documented in
+`docs/ASSET_LICENSES.md`. This version needs a local Godot screenshot check.
+
 ## M0.4.5 – WC3-style palette + tree silhouette pass
 After the third visual screenshot, Kenney's original magenta stone looked
 out of place next to the ice and snow. A **visual-only GDScript** on the main
