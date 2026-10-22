@@ -1,0 +1,9 @@
+project/.godot/
+build/
+project/bin/*
+!project/bin/.gitkeep
+!project/bin/wintertd.gdextension
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

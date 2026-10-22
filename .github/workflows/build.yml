@@ -1,0 +1,33 @@
+name: Native GDExtension build
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2022]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup MSVC (Windows)
+        if: runner.os == 'Windows'
+        uses: ilammy/msvc-dev-cmd@v1
+      - name: Setup Ninja (Windows)
+        if: runner.os == 'Windows'
+        uses: seanmiddleditch/gha-setup-ninja@v5
+      - name: Configure
+        run: cmake --preset debug
+      - name: Build
+        run: cmake --build --preset debug --parallel 2
+      - name: Upload extension
+        uses: actions/upload-artifact@v4
+        with:
+          name: wintertd-m02-${{ runner.os }}
+          path: |
+            project/bin/*.dll
+            project/bin/*.so
+          if-no-files-found: error
