@@ -56,7 +56,7 @@ GLB models** selected from Kenney's 3D Tower Defense Kit and Nature Kit:
   removed. Small terrain ground shrubs/chips remain as background details.
 
 The assets are bundled with the repo (Godot imports their GLB scenes) and
-require no additional download step. Licensing/provenance: `docs/ASSET_LICENSES.md`.
+require no additional download step. Only selected Kenney models are bundled. Licensing/provenance: `docs/ASSET_LICENSES.md`.
 We deliberately import only a handful of CC0 models rather than the whole pack.
 The winding blue route remains a **visual demo**, not a fixed creep route.
 No gameplay or camera code was added or changed.
